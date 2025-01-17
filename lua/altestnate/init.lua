@@ -1,4 +1,3 @@
-print("Hello from altestnate")
 --
 -- This code has been generated with LLM and I'm not proud of it
 -- This code helps me to navigate easily between a source file and its tests
@@ -58,18 +57,19 @@ local function find_alternate()
 end
 
 -- Create the alternate file if the user agrees
-local function create_file(file_path)
-  local confirm = vim.fn.input("File does not exist. Create it? (y/n): ")
-  if confirm:lower() == "y" then
-    local dir = vim.fn.fnamemodify(file_path, ":h") -- Get the directory of the new file
-    vim.fn.mkdir(dir, "p") -- Create the directory if it doesn't exist
-    vim.fn.writefile({}, file_path) -- Create an empty file
-    vim.cmd("edit " .. file_path) -- Open the file
-    print("Created and opened: " .. file_path)
-  else
-    print("Aborted.")
-  end
-end
+local create_file = require("altestnate.utils").create_file
+-- local function create_file(file_path)
+--   local confirm = vim.fn.input("File does not exist. Create it? (y/n): ")
+--   if confirm:lower() == "y" then
+--     local dir = vim.fn.fnamemodify(file_path, ":h") -- Get the directory of the new file
+--     vim.fn.mkdir(dir, "p") -- Create the directory if it doesn't exist
+--     vim.fn.writefile({}, file_path) -- Create an empty file
+--     vim.cmd("edit " .. file_path) -- Open the file
+--     print("Created and opened: " .. file_path)
+--   else
+--     print("Aborted.")
+--   end
+-- end
 
 -- Toggle between source and test files
 local function toggle_alternate()
@@ -96,18 +96,17 @@ local function split_and_open_alternate()
   end
 end
 
--- Keymap to toggle alternate
-vim.api.nvim_create_user_command("FindAlternate", find_alternate, {})
-vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})
--- Keymap to toggle alternate (split vertically and open the alternate file)
-vim.keymap.set("n", "<leader>at", toggle_alternate)
--- Keymap to open alternate in a split (split vertically and open the alternate file)
-vim.keymap.set("n", "<leader>as", split_and_open_alternate, { noremap = true, silent = true })
-
 local M = {}
 
 function M.setup()
-  print("My Lazy Plugin is loaded!")
+  print("Hello from altestnate")
+  -- Keymap to toggle alternate
+  vim.api.nvim_create_user_command("FindAlternate", find_alternate, {})
+  vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})
+  -- Keymap to toggle alternate (split vertically and open the alternate file)
+  vim.keymap.set("n", "<leader>at", toggle_alternate)
+  -- Keymap to open alternate in a split (split vertically and open the alternate file)
+  vim.keymap.set("n", "<leader>as", split_and_open_alternate, { noremap = true, silent = true })
 end
 
 return M
