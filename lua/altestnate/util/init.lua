@@ -34,14 +34,13 @@ function M.find_alternate(projections)
   for pattern, config in pairs(projections) do
     -- Convert the JSON pattern to a Lua regex
     local lua_pattern = project_root .. "/" .. pattern:gsub("%*", "(.*)")
+    print(lua_pattern)
     local match = { current_file:match(lua_pattern) }
     if #match > 0 then
       -- Replace {basename} with the captured part
       local alternate = config.alternate:gsub("{basename}", match[1])
       -- Construct the full path of the alternate file
       return project_root .. "/" .. alternate
-    else
-      print("here")
     end
   end
   return nil
