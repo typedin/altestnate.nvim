@@ -103,3 +103,11 @@ vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})
 vim.keymap.set("n", "<leader>at", toggle_alternate)
 -- Keymap to open alternate in a split (split vertically and open the alternate file)
 vim.keymap.set("n", "<leader>as", split_and_open_alternate, { noremap = true, silent = true })
+
+local M = {}
+
+function M.setup()
+  print("My Lazy Plugin is loaded!")
+end
+
+return M
