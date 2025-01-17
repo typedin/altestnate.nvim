@@ -1,21 +1,11 @@
 local find_alternate = require("altestnate.util").find_alternate
-local split_and_open_alternate = require("altestnate.util").split_and_open_alternate
-local toggle_alternate = require("altestnate.util").toggle_alternate
---
+local split_and_open_alternate = require("altestnate.commands").split_and_open_alternate
+local toggle_alternate = require("altestnate.commands").toggle_alternate
+
+-- WARNING
 -- This code has been generated with LLM and I'm not proud of it
 -- This code helps me to navigate easily between a source file and its tests
 --
-
--- Function to split and open the alternate file in a vertical split
--- local function split_and_open_alternate()
---   local alternate = find_alternate()
---   if alternate then
---     -- Perform a vertical split and open the alternate file
---     vim.cmd("vsplit " .. alternate)
---   else
---     print("No alternate file found!")
---   end
--- end
 
 local M = {}
 
