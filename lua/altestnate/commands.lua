@@ -24,7 +24,7 @@ function M.toggle_alternate()
 end
 
 -- Function to split and open the alternate file in a vertical split
-function M.split_and_open_alternate()
+function M.split_open_alternate()
   local alternate = find_alternate()
   if alternate then
     -- Perform a vertical split and open the alternate file

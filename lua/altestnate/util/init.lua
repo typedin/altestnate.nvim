@@ -1,5 +1,18 @@
 local M = {}
 
+-- Default template for .projections.json
+local default_template = [[
+  {
+    "src/*.ts": {
+      "alternate": "src/__tests__/{basename}.test.ts",
+      "type": "source"
+    },
+      "src/__tests__/*.test.ts": {
+      "alternate": "src/{basename}.ts",
+      "type": "test"
+    }
+  }
+]]
 -- Create the alternate file if the user agrees
 function M.create_file(file_path)
   local confirm = vim.fn.input("File does not exist. Create it? (y/n): ")
@@ -44,19 +57,6 @@ function M.load_projections()
     -- If the file doesn't exist, prompt to create it
     local confirm = vim.fn.input("No .projections.json file found. Create it? (y/n): ")
     if confirm:lower() == "y" then
-      -- Default template for .projections.json
-      local default_template = [[
-{
-  "src/*.ts": {
-    "alternate": "src/__tests__/{basename}.test.ts",
-    "type": "source"
-  },
-  "src/__tests__/*.test.ts": {
-    "alternate": "src/{basename}.ts",
-    "type": "test"
-  }
-}
-]]
       -- Create the .projections.json file with the default template
       vim.fn.writefile(vim.fn.split(default_template, "\n"), projections_file)
       print(".projections.json has been created with a basic template!")
