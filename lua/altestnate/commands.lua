@@ -1,6 +1,6 @@
-local create_file = require("altestnate.utils").create_file
-local find_alternate = require("altestnate.utils").find_alternate
-local load_projections = require("altestnate.utils").load_projections
+local create_file = require("altestnate.util").create_file
+local find_alternate = require("altestnate.util").find_alternate
+local load_projections = require("altestnate.util").load_projections
 
 ---@class AltestnateCommand
 local M = {}

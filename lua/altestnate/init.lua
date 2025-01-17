@@ -1,6 +1,6 @@
-local find_alternate = require("altestnate.utils").find_alternate
-local split_and_open_alternate = require("altestnate.utils").split_and_open_alternate
-local toggle_alternate = require("altestnate.utils").toggle_alternate
+local find_alternate = require("altestnate.util").find_alternate
+local split_and_open_alternate = require("altestnate.util").split_and_open_alternate
+local toggle_alternate = require("altestnate.util").toggle_alternate
 --
 -- This code has been generated with LLM and I'm not proud of it
 -- This code helps me to navigate easily between a source file and its tests

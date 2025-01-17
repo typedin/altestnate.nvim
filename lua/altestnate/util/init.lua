@@ -1,4 +1,5 @@
 local M = {}
+
 -- Create the alternate file if the user agrees
 function M.create_file(file_path)
   local confirm = vim.fn.input("File does not exist. Create it? (y/n): ")
