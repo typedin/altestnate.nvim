@@ -29,6 +29,7 @@ end
 
 -- Find the alternate file based on patterns
 function M.find_alternate(projections)
+  print("here")
   local current_file = vim.fn.expand("%:p") -- Get the full path of the current file
   local project_root = vim.fn.getcwd() -- Get the project root directory
   for pattern, config in pairs(projections) do
