@@ -13,7 +13,7 @@ function M.setup()
   print("Hello from altestnate")
   -- register the find_alternate command
   vim.api.nvim_create_user_command("FindAlternate", function()
-    require("altestnate.utils").find_alternate(projections)
+    require("altestnate.util").find_alternate(projections)
   end, { desc = "Find Alternate file" })
   -- register the toggle_alternate command
   vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})
