@@ -10,7 +10,6 @@ local M = {}
 local projections = require("altestnate.util").load_projections()
 
 function M.setup()
-  print("Hello from altestnate")
   -- register the find_alternate command
   vim.api.nvim_create_user_command("FindAlternate", function()
     require("altestnate.util").find_alternate(projections)
