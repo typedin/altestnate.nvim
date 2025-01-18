@@ -60,24 +60,23 @@ function M.load_projections()
     -- If the file doesn't exist, prompt to create it
     -- local confirm = vim.fn.input("No .projections.json file found. Create it? (y/n): ")
     vim.ui.input({
-      prompt = "No .projections.json file found. Create it? (Y/n): ",
-      default = "y",
+      prompt = ".projections.json file NOT found. Create it? (y/n): ",
     }, function(input)
       if input:lower() == "y" then
         -- Create the .projections.json file with the default template
         vim.fn.writefile(vim.fn.split(default_template, "\n"), projections_file)
-        print(".projections.json has been created with a basic template!")
+        print("\n.projections.json has been created with a basic template!")
       else
-        print("Aborted.")
+        print("\nAborted.")
       end
     end)
-    if confirm:lower() == "y" then
-      -- Create the .projections.json file with the default template
-      vim.fn.writefile(vim.fn.split(default_template, "\n"), projections_file)
-      print(".projections.json has been created with a basic template!")
-    else
-      print("Aborted.")
-    end
+    -- if confirm:lower() == "y" then
+    --   -- Create the .projections.json file with the default template
+    --   vim.fn.writefile(vim.fn.split(default_template, "\n"), projections_file)
+    --   print(".projections.json has been created with a basic template!")
+    -- else
+    --   print("Aborted.")
+    -- end
     return {}
   end
 end
