@@ -14,4 +14,8 @@ M.reset_editor = function()
   end
 end
 
+M.file_exists = function(filepath)
+  return vim.loop.fs_stat(filepath) ~= nil
+end
+
 return M
