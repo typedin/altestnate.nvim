@@ -1,6 +1,6 @@
 local M = {}
 
-local function find_alternate(projections)
+M.find_alternate = function(projections)
   local current_file = vim.fn.expand("%:p") -- Full path of the current file
 
   -- Iterate through all projection patterns
@@ -17,5 +17,4 @@ local function find_alternate(projections)
   return nil -- No match found
 end
 
-M.find_alternate = find_alternate
 return M

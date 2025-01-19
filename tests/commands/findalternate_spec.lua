@@ -1,5 +1,5 @@
 local test_util = require("tests.test_util")
-local find_alternate = require("altestnate.findalternate").find_alternate
+local find_alternate = require("lua.altestnate.commands.init").find_alternate
 
 local projections = {
   ["src/*.ts"] = {
@@ -41,6 +41,7 @@ describe("find_alternate", function()
     after_each(function()
       test_util.reset_editor()
     end)
+
     it("returns the correct alternate test file", function()
       vim.cmd.edit({ args = { "src/source_file.ts" } })
 
@@ -48,6 +49,7 @@ describe("find_alternate", function()
 
       assert.are.same("src/__tests__/source_file.test.ts", result)
     end)
+
     it("finds the alternate test file for a PHP source file in Actions", function()
       vim.cmd.edit({ args = { "src/Actions/MyAction.php" } })
 
@@ -55,6 +57,7 @@ describe("find_alternate", function()
 
       assert.are.same("tests/Feature/MyActionTest.php", result)
     end)
+
     it("finds the alternate test file for a general PHP source file", function()
       vim.cmd.edit({ args = { "src/MyClass.php" } })
 
@@ -62,6 +65,7 @@ describe("find_alternate", function()
 
       assert.are.same("tests/MyClassTest.php", result)
     end)
+
     it("finds the alternate test file for a TypeScript source file", function()
       vim.cmd.edit({ args = { "src/file.ts" } })
 
@@ -69,6 +73,7 @@ describe("find_alternate", function()
 
       assert.are.same("src/__tests__/file.test.ts", result)
     end)
+
     it("finds the alternate test file for a PHP source file in Actions", function()
       vim.cmd.edit({ args = { "src/Actions/MyAction.php" } })
 
@@ -76,6 +81,7 @@ describe("find_alternate", function()
 
       assert.are.same("tests/Feature/MyActionTest.php", result)
     end)
+
     it("finds the alternate test file for a lua source file", function()
       vim.cmd.edit({ args = { "lua/file.lua" } })
 
@@ -84,41 +90,44 @@ describe("find_alternate", function()
       assert.are.same("tests/file_spec.lua", result)
     end)
   end)
+
   describe("for test files", function()
     after_each(function()
       test_util.reset_editor()
     end)
-    -- it("returns the correct alternate source file for a test file", function()
-    --   vim.cmd.edit({ args = { "src/__tests__/file.test.ts" } })
-    --
-    --   local result = find_alternate(projections)
-    --
-    --   assert.are.same("src/file.ts", result)
-    -- end)
-    --
-    -- it("finds the alternate source file for a TypeScript test file", function()
-    --   vim.cmd.edit({ args = { "src/__tests__/file.test.ts" } })
-    --
-    --   local result = find_alternate(projections)
-    --
-    --   assert.are.same("src/file.ts", result)
-    -- end)
-    --
-    -- it("finds the alternate source file for a PHP test file in Feature", function()
-    --   vim.cmd.edit({ args = { "tests/Actions/MyActionTest.php" } })
-    --
-    --   local result = find_alternate(projections)
-    --
-    --   assert.are.same("src/Actions/MyAction.php", result)
-    -- end)
-    --
-    -- it("finds the alternate source file for a general PHP test file", function()
-    --   vim.cmd.edit({ args = { "tests/MyClassTest.php" } })
-    --
-    --   local result = find_alternate(projections)
-    --
-    --   assert.are.same("src/MyClass.php", result)
-    -- end)
+
+    it("returns the correct alternate source file for a test file", function()
+      vim.cmd.edit({ args = { "src/__tests__/file.test.ts" } })
+
+      local result = find_alternate(projections)
+
+      assert.are.same("src/file.ts", result)
+    end)
+
+    it("finds the alternate source file for a TypeScript test file", function()
+      vim.cmd.edit({ args = { "src/__tests__/file.test.ts" } })
+
+      local result = find_alternate(projections)
+
+      assert.are.same("src/file.ts", result)
+    end)
+
+    it("finds the alternate source file for a PHP test file in Feature", function()
+      vim.cmd.edit({ args = { "tests/Actions/MyActionTest.php" } })
+
+      local result = find_alternate(projections)
+
+      assert.are.same("src/Actions/MyAction.php", result)
+    end)
+
+    it("finds the alternate source file for a general PHP test file", function()
+      vim.cmd.edit({ args = { "tests/MyClassTest.php" } })
+
+      local result = find_alternate(projections)
+
+      assert.are.same("src/MyClass.php", result)
+    end)
+
     it("finds the alternate file for a lua test file", function()
       vim.cmd.edit({ args = { "tests/file_spec.lua" } })
 

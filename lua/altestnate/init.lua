@@ -23,6 +23,12 @@ function M.setup()
   end)
   -- Keymap to open alternate in a split (split vertically and open the alternate file)
   -- vim.keymap.set("n", "<leader>as", split_open_alternate, { noremap = true, silent = true })
+  --
+  -- TODO
+  -- create a CreateProjection commad
+
+  -- TODO
+  -- create a EditProjection command
 end
 
 return M
