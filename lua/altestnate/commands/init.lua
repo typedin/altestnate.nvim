@@ -1,6 +1,7 @@
 local create_projection = require("altestnate.fs").create_projection
+local edit_projection = require("altestnate.fs").edit_projection
 local load_projections = require("altestnate.util").load_projections
-local create_file = require("altestnate.util").create_file
+local create_file = require("altestnate.fs").create_file
 local prompt = require("altestnate.prompt").prompt
 
 ---@class AltestnateCommand
@@ -15,6 +16,12 @@ M.create_projections_file = function()
   end)
 end
 
+M.edit_projections_file = function()
+  prompt({ prompt = "Edit the .projections file? (y/n): " }, edit_projection)
+end
+
+---@param projections table<string, table>
+---@return string|nil
 M.find_alternate = function(projections)
   local current_file = vim.fn.expand("%:p") -- Full path of the current file
 
@@ -35,12 +42,12 @@ end
 -- Toggle between source and test files
 function M.toggle_alternate()
   local projections = load_projections()
-  local alternate = M.find_alternate(projections)
-  if alternate then
-    if vim.fn.filereadable(alternate) == 1 then
-      vim.cmd("edit " .. alternate)
+  local alternate_path = M.find_alternate(projections)
+  if alternate_path then
+    if vim.fn.filereadable(alternate_path) == 1 then
+      vim.cmd("edit " .. alternate_path)
     else
-      create_file(alternate)
+      create_file(alternate_path)
     end
   else
     print("No alternate file found!")
@@ -49,7 +56,8 @@ end
 
 -- Function to split and open the alternate file in a vertical split
 function M.split_open_alternate()
-  local alternate = M.find_alternate()
+  local projections = load_projections()
+  local alternate = M.find_alternate(projections)
   if alternate then
     -- Perform a vertical split and open the alternate file
     vim.cmd("vsplit " .. alternate)

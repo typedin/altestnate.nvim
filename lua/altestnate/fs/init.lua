@@ -19,7 +19,6 @@ local M = {}
 
 -- Create the alternate file if the user agrees
 function M.create_alternate_file(file_path)
-  print("loaded")
   local callback = function()
     local dir = vim.fn.fnamemodify(file_path, ":h") -- Get the directory of the new file
     vim.fn.mkdir(dir, "p") -- Create the directory if it doesn't exist
@@ -31,8 +30,21 @@ function M.create_alternate_file(file_path)
   prompt({ prompt = "Alternate file not found. Create it? (y/n): " }, callback)
 end
 
+function M.edit_projection()
+  vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. ".projections.json")
+end
+
 function M.create_projection()
   vim.fn.writefile(vim.fn.split(default_template, "\n"), projections_file)
+end
+
+function M.create_file(file_path)
+  local dir = vim.fn.fnamemodify(file_path, ":h") -- Get the directory of the new file
+  if vim.fn.mkdir(dir, "p") then -- Create the directory if it doesn't exist
+    vim.notify("Folders existed, not creating them" .. file_path, vim.log.levels.INFO)
+  end
+
+  vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. file_path)
 end
 
 return M
