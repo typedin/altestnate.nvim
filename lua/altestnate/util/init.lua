@@ -6,6 +6,7 @@ local M = {}
 --- Find the alternate file based on patterns
 ---@return table
 function M.load_projections()
+  local projections = {}
   local projections_file = vim.fn.getcwd() .. "/.projections.json"
 
   if vim.fn.filereadable(projections_file) == 1 then
@@ -13,13 +14,12 @@ function M.load_projections()
     -- That should be a function that gets projections
     -- If the file exists, read and decode its contents
     local content = vim.fn.readfile(projections_file)
-    local decoded = vim.fn.json_decode(table.concat(content, "\n"))
-    return decoded
+    projections = vim.fn.json_decode(table.concat(content, "\n"))
   else
     prompt({ prompt = ".projections.json file NOT found. Create it? (y/n): " }, create_projection)
-
-    return {}
   end
+
+  return projections
 end
 
 return M

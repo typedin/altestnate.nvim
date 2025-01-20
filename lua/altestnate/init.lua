@@ -1,15 +1,11 @@
 local create_projection = require("altestnate.commands").create_projections_file
 local edit_projection = require("altestnate.commands").edit_projections_file
+local split_open_alternate = require("altestnate.commands").split_open_alternate
 local toggle_alternate = require("altestnate.commands").toggle_alternate
 
 local M = {}
 
 function M.setup()
-  -- register the find_alternate command
-  -- vim.api.nvim_create_user_command("FindAlternate", function()
-  --   require("altestnate.util").find_alternate(projections)
-  -- end, { desc = "Find Alternate file" })
-
   -- register a CreateProjection command
   vim.api.nvim_create_user_command("CreateProjectionsFile", create_projection, {})
 
@@ -19,15 +15,14 @@ function M.setup()
   -- register a ToggleAlternate command
   vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})
 
-  -- TODO
-  -- create a SplitOpenAlternate command
   -- register the split_and_open_alternate command
-  -- vim.api.nvim_create_user_command("SplitOpenAlternate", split_open_alternate, {})
+  vim.api.nvim_create_user_command("SplitOpenAlternate", split_open_alternate, {})
 
   -- Keymap to toggle alternate (split vertically and open the alternate file)
   vim.keymap.set("n", "<leader>at", toggle_alternate)
+
   -- Keymap to open alternate in a split (split vertically and open the alternate file)
-  -- vim.keymap.set("n", "<leader>as", split_open_alternate, { noremap = true, silent = true })
+  vim.keymap.set("n", "<leader>as", split_open_alternate, { noremap = true, silent = true })
 end
 
 return M

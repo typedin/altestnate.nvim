@@ -1,7 +1,8 @@
+local find_alternate = require("altestnate.commands.find_alternate").find_alternate
+local create_file = require("altestnate.fs").create_file
 local create_projection = require("altestnate.fs").create_projection
 local edit_projection = require("altestnate.fs").edit_projection
-local load_projections = require("altestnate.util").load_projections
-local create_file = require("altestnate.fs").create_file
+local load_projections = require("altestnate.fs").load_projections
 local prompt = require("altestnate.prompt").prompt
 
 ---@class AltestnateCommand
@@ -20,29 +21,10 @@ M.edit_projections_file = function()
   prompt({ prompt = "Edit the .projections file? (y/n): " }, edit_projection)
 end
 
----@param projections table<string, table>
----@return string|nil
-M.find_alternate = function(projections)
-  local current_file = vim.fn.expand("%:p") -- Full path of the current file
-
-  -- Iterate through all projection patterns
-  for pattern, config in pairs(projections) do
-    -- Convert the glob-style pattern to a Lua regex
-    local lua_pattern = pattern:gsub("%*", "(.-)") -- Convert '*' to non-greedy capture
-    -- Test the matching part
-    local match = current_file:match(lua_pattern)
-    -- If the match is successful, substitute {basename}
-    if match then
-      return config.alternate:gsub("{basename}", match):gsub("{}", match)
-    end
-  end
-  return nil -- No match found
-end
-
 -- Toggle between source and test files
 function M.toggle_alternate()
   local projections = load_projections()
-  local alternate_path = M.find_alternate(projections)
+  local alternate_path = find_alternate(projections)
   if alternate_path then
     if vim.fn.filereadable(alternate_path) == 1 then
       vim.cmd("edit " .. alternate_path)
@@ -57,12 +39,12 @@ end
 -- Function to split and open the alternate file in a vertical split
 function M.split_open_alternate()
   local projections = load_projections()
-  local alternate = M.find_alternate(projections)
+  local alternate = find_alternate(projections)
   if alternate then
     -- Perform a vertical split and open the alternate file
     vim.cmd("vsplit " .. alternate)
   else
-    print("No alternate file found!")
+    vim.notify("No alternate file found!", vim.log.levels.WARN)
   end
 end
 
