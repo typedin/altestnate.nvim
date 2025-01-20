@@ -1,4 +1,4 @@
-local create_projections = require("altestnate.fs").create_projections
+local create_projection = require("altestnate.fs").create_projection
 local prompt = require("altestnate.prompt").prompt
 
 local M = {}
@@ -16,9 +16,8 @@ function M.load_projections()
     local decoded = vim.fn.json_decode(table.concat(content, "\n"))
     return decoded
   else
-    prompt({
-      prompt = ".projections.json file NOT found. Create it? (y/n): ",
-    }, create_projections)
+    prompt({ prompt = ".projections.json file NOT found. Create it? (y/n): " }, create_projection)
+
     return {}
   end
 end
