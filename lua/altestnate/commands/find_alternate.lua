@@ -1,24 +1,39 @@
 local M = {}
 
----@param projections table<string, table>
+---@param projections table<string, table>>
+---@param file_path string
 ---@return string|nil
-M.find_alternate = function(projections)
-  local current_file = vim.fn.expand("%:p") -- Full path of the current file
+M.find_alternate = function(projections, file_path)
+  local current_file = file_path
 
-  -- TODO
-  -- this loop has unexpected behavior
-  -- Iterate through all projection patterns
+  local result = nil
+  -- since I cannot do regex I split the pattern in two
+  -- loop over all projections for source files
   for pattern, config in pairs(projections) do
-    -- Convert the glob-style pattern to a Lua regex
     local lua_pattern = pattern:gsub("%*", "(.-)") -- Convert '*' to non-greedy capture
-    -- Test the matching part
     local match = current_file:match(lua_pattern)
-    -- If the match is successful, substitute {basename}
     if match then
-      return config.alternate:gsub("{basename}", match):gsub("{}", match)
+      result = config.alternate:gsub("{basename}", match):gsub("{}", match)
     end
   end
-  return nil -- No match found
+  -- loop over all projections for test files
+  for pattern, config in pairs(projections) do
+    -- Convert the glob-style pattern to a Lua regex
+    -- example:
+    -- transform src/*.ts to src/(.-).ts
+    --[[
+        @see https://riptutorial.com/lua/example/20315/lua-pattern-matching
+        ------------------------------------------▼ change with +
+        local lua_pattern = pattern:gsub("%*", "(.-)") -- Convert '*' to non-greedy capture
+        local lua_pattern = pattern:gsub("%*", "^.+/(.+)") -- Convert '*' to one or more repetitions
+      --]]
+    local lua_pattern = pattern:gsub("%*", "([^/]+)") --:gsub("%.", "%%.")
+    local match = current_file:match(lua_pattern)
+    if match then
+      result = config.alternate:gsub("{basename}", match):gsub("{}", match)
+    end
+  end
+  return result
 end
 
 return M
