@@ -39,15 +39,15 @@ end
 -- Function to split and open the alternate file in a vertical split
 function M.split_open_alternate()
   local projections = load_projections()
-  local alternate = find_alternate(projections, vim.fn.expand("%:p"))
-  if alternate then
+  local alternate_path = find_alternate(projections, vim.fn.expand("%:p"))
+  if alternate_path then
     -- Perform a vertical split and open the alternate file
     -- if file exists open it
     -- else edit a new buffer
-    if vim.fn.filereadable(alternate) == 1 then
-      vim.cmd("vsplit " .. alternate)
+    if vim.fn.filereadable(alternate_path) == 1 then
+      vim.cmd("vsplit " .. alternate_path)
     else
-      create_file(alternate)
+      create_file(alternate_path)
     end
   else
     vim.notify("No alternate file found!", vim.log.levels.WARN)
