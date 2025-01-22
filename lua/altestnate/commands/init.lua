@@ -42,7 +42,13 @@ function M.split_open_alternate()
   local alternate = find_alternate(projections, vim.fn.expand("%:p"))
   if alternate then
     -- Perform a vertical split and open the alternate file
-    vim.cmd("vnew" .. " " .. alternate)
+    -- if file exists open it
+    -- else edit a new buffer
+    if vim.fn.filereadable(alternate) == 1 then
+      vim.cmd("vsplit " .. alternate)
+    else
+      create_file(alternate)
+    end
   else
     vim.notify("No alternate file found!", vim.log.levels.WARN)
   end
