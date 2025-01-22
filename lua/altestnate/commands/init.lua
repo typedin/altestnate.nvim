@@ -1,7 +1,7 @@
-local find_alternate = require("altestnate.commands.find_alternate").find_alternate
 local create_file = require("altestnate.fs").create_file
 local create_projection = require("altestnate.fs").create_projection
 local edit_projection = require("altestnate.fs").edit_projection
+local find_alternate = require("altestnate.commands.find_alternate").find_alternate
 local load_projections = require("altestnate.fs").load_projections
 local prompt = require("altestnate.prompt").prompt
 
@@ -24,7 +24,7 @@ end
 -- Toggle between source and test files
 function M.toggle_alternate()
   local projections = load_projections()
-  local alternate_path = find_alternate(projections)
+  local alternate_path = find_alternate(projections, vim.fn.expand("%:p"))
   if alternate_path then
     if vim.fn.filereadable(alternate_path) == 1 then
       vim.cmd("edit " .. alternate_path)
@@ -32,17 +32,17 @@ function M.toggle_alternate()
       create_file(alternate_path)
     end
   else
-    print("No alternate file found!")
+    vim.notify("No alternate file found!", vim.log.levels.WARN)
   end
 end
 
 -- Function to split and open the alternate file in a vertical split
 function M.split_open_alternate()
   local projections = load_projections()
-  local alternate = find_alternate(projections)
+  local alternate = find_alternate(projections, vim.fn.expand("%:p"))
   if alternate then
     -- Perform a vertical split and open the alternate file
-    vim.cmd("vsplit " .. alternate)
+    vim.cmd("vnew" .. " " .. alternate)
   else
     vim.notify("No alternate file found!", vim.log.levels.WARN)
   end
