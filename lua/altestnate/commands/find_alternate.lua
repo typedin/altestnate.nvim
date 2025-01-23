@@ -10,7 +10,7 @@ M.find_alternate = function(projections, file_path)
   -- since I cannot do regex I split the pattern in two
   -- loop over all projections for source files
   for pattern, config in pairs(projections) do
-    local lua_pattern = pattern:gsub("%*", "(.-)") -- Convert '*' to non-greedy capture
+    local lua_pattern = pattern:gsub("%*", "(.+)") -- Convert '*' to non-greedy capture
     local match = current_file:match(lua_pattern)
     if match then
       result = config.alternate:gsub("{basename}", match):gsub("{}", match)

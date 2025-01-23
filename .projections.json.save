@@ -1,7 +1,7 @@
 {
   "lua/altestnate/*.lua": {
-    "alternate ": "tests/{}_spec.lua",
-    "type ": "source"
+    "alternate": "tests/{}_spec.lua",
+    "type": "source"
   },
   "tests/*_spec.lua": {
     "alternate": "lua/altestnate/{}.lua",

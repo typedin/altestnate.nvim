@@ -89,5 +89,13 @@ describe("find_alternate", function()
 
       assert.are.same("lua/file.lua", result)
     end)
+
+    it("finds the alternate source file for a lua test file in a plugin context", function()
+      local file_path = "tests/commands/find_alternate_spec.lua"
+
+      local result = find_alternate(projections, file_path)
+
+      assert.are.same("lua/plugins/commands/file.lua", result)
+    end)
   end)
 end)

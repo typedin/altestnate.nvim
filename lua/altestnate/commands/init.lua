@@ -21,10 +21,19 @@ M.edit_projections_file = function()
   prompt({ prompt = "Edit the .projections file? (y/n): " }, edit_projection)
 end
 
+---Private function
+---TODO
+---read :h expand
+---
+---@return string
+local function get_alternate()
+  local projections = load_projections()
+  return find_alternate(projections, vim.fn.expand("%:p"))
+end
+
 -- Toggle between source and test files
 function M.toggle_alternate()
-  local projections = load_projections()
-  local alternate_path = find_alternate(projections, vim.fn.expand("%:p"))
+  local alternate_path = get_alternate()
   if alternate_path then
     if vim.fn.filereadable(alternate_path) == 1 then
       vim.cmd("edit " .. alternate_path)
@@ -38,8 +47,7 @@ end
 
 -- Function to split and open the alternate file in a vertical split
 function M.split_open_alternate()
-  local projections = load_projections()
-  local alternate_path = find_alternate(projections, vim.fn.expand("%:p"))
+  local alternate_path = get_alternate()
   if alternate_path then
     -- Perform a vertical split and open the alternate file
     -- if file exists open it

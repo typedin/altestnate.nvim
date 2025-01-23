@@ -3,6 +3,10 @@ local edit_projection = require("altestnate.commands").edit_projections_file
 local split_open_alternate = require("altestnate.commands").split_open_alternate
 local toggle_alternate = require("altestnate.commands").toggle_alternate
 
+-- TODO
+-- cache projections
+--
+
 local M = {}
 
 function M.setup()
