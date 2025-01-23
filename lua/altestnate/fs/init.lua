@@ -25,7 +25,7 @@ function M.create_alternate_file(file_path)
     vim.fn.mkdir(dir, "p") -- Create the directory if it doesn't exist
     vim.fn.writefile({}, file_path) -- Create an empty file
     vim.cmd("edit " .. file_path) -- Open the file
-    print("Created and opened: " .. file_path)
+    vim.notify("Created and opened: ", vim.log.levels.INFO)
   end
 
   prompt({ prompt = "Alternate file not found. Create it? (y/n): " }, callback)

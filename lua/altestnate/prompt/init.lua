@@ -7,7 +7,7 @@ M.prompt = function(args, callback)
     if input:lower() == "y" then
       callback()
     else
-      print("\nAborted.")
+      vim.notify("\nAborted.", vim.log.levels.INFO)
     end
   end)
 end
