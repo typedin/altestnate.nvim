@@ -2,20 +2,6 @@ local prompt = require("altestnate.prompt").prompt
 
 local projections_file = vim.fn.getcwd() .. "/.projections.json"
 
--- Default template for .projections.json
-local default_template = [[
-  {
-    "src/*.ts": {
-      "alternate": "src/__tests__/{basename}.test.ts",
-      "type": "source"
-    },
-      "src/__tests__/*.test.ts": {
-      "alternate": "src/{basename}.ts",
-      "type": "test"
-    }
-  }
-]]
-
 local M = {}
 
 -- Create the alternate file if the user agrees
@@ -35,8 +21,27 @@ function M.edit_projection()
   vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. ".projections.json")
 end
 
+-- TODO
+-- ask the user for their project structure
 function M.create_projection()
+  -- Default template for .projections.json
+  local default_template = [[
+  {
+    "src/*.ts": {
+      "alternate": "src/__tests__/{basename}.test.ts",
+      "type": "source"
+    },
+      "src/__tests__/*.test.ts": {
+      "alternate": "src/{basename}.ts",
+      "type": "test"
+    }
+  }
+]]
   vim.fn.writefile(vim.fn.split(default_template, "\n"), projections_file)
+  -- ask for source folder
+  -- ask for extension
+  -- ask for test folder
+  -- from that create the test alternate
 end
 
 function M.create_file(file_path)
