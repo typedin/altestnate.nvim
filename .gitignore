@@ -1,7 +1,7 @@
 *.log
 /.repro
 /.tests
-/.testenv
+/.testenv/
 /build
 /debug
 /doc/tags
