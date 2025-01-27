@@ -14,7 +14,7 @@ local defaults = {
 }
 
 ---@class altestnate.Options
----@field keymaps table<string, string>: The keymaps to control slide show
+---@field keymaps table<string, string>: The keymaps to control alternate navigation
 
 ---@type altestnate.Options
 local options = {
@@ -25,24 +25,6 @@ local M = {}
 
 function M.setup(opts)
   options = vim.tbl_deep_extend("force", defaults, opts or {})
-
-  -- -- register a CreateProjection command
-  -- vim.api.nvim_create_user_command("CreateProjectionsFile", create_projection, {})
-  --
-  -- -- create a EditProjection command
-  -- vim.api.nvim_create_user_command("EditProjection", edit_projection, {})
-  --
-  -- -- register a ToggleAlternate command
-  -- vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})
-  --
-  -- -- register the split_and_open_alternate command
-  -- vim.api.nvim_create_user_command("SplitOpenAlternate", split_open_alternate, {})
-
-  -- -- Keymap to toggle alternate (split vertically and open the alternate file)
-  -- vim.keymap.set("n", "<leader>at", toggle_alternate)
-  --
-  -- -- Keymap to open alternate in a split (split vertically and open the alternate file)
-  -- vim.keymap.set("n", "<leader>as", split_open_alternate)
 end
 
 local altestnate_keymap = function(mode, key, callback)
@@ -71,9 +53,5 @@ M.start_altestnate = function()
     split_open_alternate()
   end)
 end
-
-vim.api.nvim_create_user_command("AltestnateStart", function()
-  M.start_altestnate()
-end, {})
 
 return M
