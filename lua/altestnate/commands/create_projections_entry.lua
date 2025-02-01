@@ -1,32 +1,36 @@
---[[
-  @see help expand() :h fnamemodify
-  Modifiers:
-    :p		expand to full path
-    :h		head (last path component removed)
-    :t		tail (last path component only)
-    :r		root (one extension removed)
-    :e		extension only
---]]
-local M = function(args)
+---@param a_path any path passed in by the user
+---@return string sanatized path without leading and trailing slashes
+local function sanatize_path(a_path)
+  local result = vim.fn.substitute(a_path, "^/", "", "") -- remove leading slash
+  result = vim.fn.substitute(result, "/$", "", "") -- remove trailing slash
+
+  return result
+end
+
+---@class Args
+---@field entry_key string: The path to the entry file
+---@field test_folder string: The folder where test files are located
+---@field test_suffix string: The suffix for test files (e.g., "_spec")
+
+---@param args Args
+---@return table
+local function M(args)
   if args == nil then
     return {}
   end
-  -- TODO
-  -- sanatize path eg: remove /
 
-  -- :h		head (last path component removed)
-  local source_path = vim.fn.fnamemodify(vim.fn.expand(args.entry_key), ":h")
-  -- :t		tail (last path component only)
-  -- :r		root (one extension removed)
+  -- @read :help expand() and @read :help fnamemodify
+  local source_path = sanatize_path(vim.fn.fnamemodify(vim.fn.expand(args.entry_key), ":h"))
   local filename = vim.fn.fnamemodify(vim.fn.expand(args.entry_key), ":t:r")
-
   local file_extension = vim.fn.fnamemodify(vim.fn.expand(args.entry_key), ":e")
-  local source_entry = args.entry_key:gsub(filename, "*")
-  local test_entry = args.test_folder .. "/*" .. args.test_suffix .. "." .. file_extension
+
+  local source_entry = sanatize_path(args.entry_key:gsub(filename, "*"))
+  local test_folder = sanatize_path(args.test_folder)
+  local test_entry = test_folder .. "/*" .. args.test_suffix .. "." .. file_extension
 
   return {
     [source_entry] = {
-      alternate = args.test_folder .. "/{}" .. args.test_suffix .. "." .. file_extension,
+      alternate = test_folder .. "/{}" .. args.test_suffix .. "." .. file_extension,
       type = "source",
     },
     [test_entry] = {

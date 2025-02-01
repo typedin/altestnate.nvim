@@ -8,6 +8,7 @@
 - **Open alternate test files in a vertical split** for better side-by-side editing.
 - **Edit and create projection files** for better management of your alternate file mappings.
 - **Customizable key mappings** for easy access.
+- **wip**: interact with the user to create a projection file
 
 ## Installation
 

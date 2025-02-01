@@ -28,4 +28,25 @@ describe("create_projection_entry", function()
       },
     })
   end)
+
+  it("create a correct structure with leading and trailing slash", function()
+    local args = {
+      entry_key = "/src/init.lua",
+      test_folder = "/tests/",
+      test_suffix = "_spec",
+    }
+
+    local result = create_projection_entry(args)
+
+    assert.are.same(result, {
+      ["src/*.lua"] = {
+        alternate = "tests/{}_spec.lua",
+        type = "source",
+      },
+      ["tests/*_spec.lua"] = {
+        alternate = "src/{}.lua",
+        type = "test",
+      },
+    })
+  end)
 end)

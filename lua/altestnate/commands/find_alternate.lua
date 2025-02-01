@@ -7,7 +7,7 @@ M.find_alternate = function(projections, file_path)
   local current_file = file_path
 
   local result = nil
-  -- since I cannot do regex I split the pattern in two
+  -- since I cannot regex I split the pattern in two
   -- loop over all projections for source files
   for pattern, config in pairs(projections) do
     local lua_pattern = pattern:gsub("%*", "(.+)") -- Convert '*' to non-greedy capture
@@ -18,15 +18,6 @@ M.find_alternate = function(projections, file_path)
   end
   -- loop over all projections for test files
   for pattern, config in pairs(projections) do
-    -- Convert the glob-style pattern to a Lua regex
-    -- example:
-    -- transform src/*.ts to src/(.-).ts
-    --[[
-        @see https://riptutorial.com/lua/example/20315/lua-pattern-matching
-        ------------------------------------------▼ change with +
-        local lua_pattern = pattern:gsub("%*", "(.-)") -- Convert '*' to non-greedy capture
-        local lua_pattern = pattern:gsub("%*", "^.+/(.+)") -- Convert '*' to one or more repetitions
-      --]]
     local lua_pattern = pattern:gsub("%*", "([^/]+)") --:gsub("%.", "%%.")
     local match = current_file:match(lua_pattern)
     if match then
