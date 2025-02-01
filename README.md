@@ -4,7 +4,7 @@
 
 ## Features
 
-- **Toggle between alternate test files** (e.g., from `.ts` to `.test.ts`).
+- **Toggle between alternate test files** (e.g., from `.ts` to `.test.ts`, from `.lua` to `_spec.lua`).
 - **Open alternate test files in a vertical split** for better side-by-side editing.
 - **Edit and create projection files** for better management of your alternate file mappings.
 - **Customizable key mappings** for easy access.
