@@ -7,28 +7,30 @@ local toggle_alternate = require("altestnate.commands").toggle_alternate
 -- cache projections
 --
 local defaults = {
-  keymaps = {
-    toggle_alternate = "<leader>at",
-    split_open_alternate = "<leader>as",
+  keys = {
+    { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle to alternate file" },
+    { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new vertical split" },
+    { "<leader>ae", "<cmd>EditProjectionFile<cr>", desc = "Edit the projection file" },
+    { "<leader>ac", "<cmd>CreateProjectionsFile<cr>", desc = "Create a projection file" },
   },
 }
 
 ---@class altestnate.Options
----@field keymaps table<string, string>: The keymaps to control alternate navigation
+---@field keys table<string, string>: The keymaps to control alternate navigation
 
 ---@type altestnate.Options
 local options = {
-  keymaps = {},
+  keys = {},
 }
 
 local M = {}
 
+-- lazy.nvim loads this function
 function M.setup(opts)
-  options = vim.tbl_deep_extend("force", defaults, opts or {})
-end
+  opts = opts or {} -- Ensure opts is a table
+  opts.keys = opts.keys or {} -- Ensure opts.keys is a table
 
-local altestnate_keymap = function(mode, key, callback)
-  vim.keymap.set(mode, key, callback, {})
+  options.keys = vim.list_extend(vim.deepcopy(defaults.keys), opts.keys)
 end
 
 M.start_altestnate = function()
@@ -36,22 +38,18 @@ M.start_altestnate = function()
   vim.api.nvim_create_user_command("CreateProjectionsFile", create_projection, {})
 
   -- create a EditProjection command
-  vim.api.nvim_create_user_command("EditProjection", edit_projection, {})
+  vim.api.nvim_create_user_command("EditProjectionFile", edit_projection, {})
 
   -- register a ToggleAlternate command
   vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})
 
   -- register the split_and_open_alternate command
   vim.api.nvim_create_user_command("SplitOpenAlternate", split_open_alternate, {})
-  -- Keymap to toggle alternate (split vertically and open the alternate file)
-  altestnate_keymap("n", options.keymaps.toggle_alternate or defaults.keymaps.toggle_alternate, function()
-    toggle_alternate()
-  end)
 
-  -- Keymap to open alternate in a split (split vertically and open the alternate file)
-  altestnate_keymap("n", options.keymaps.split_open_alternate or defaults.keymaps.split_open_alternate, function()
-    split_open_alternate()
-  end)
+  -- apply the keymaps
+  for _, keymap in ipairs(options.keys) do
+    vim.keymap.set("n", keymap[1], keymap[2], { desc = keymap.desc or "" })
+  end
 end
 
 return M
