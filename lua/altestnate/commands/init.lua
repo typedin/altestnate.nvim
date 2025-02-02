@@ -2,7 +2,7 @@ local create_file = require("altestnate.fs").create_file
 local create_projection = require("altestnate.fs").create_projection
 local edit_projection = require("altestnate.fs").edit_projection
 local find_alternate = require("altestnate.commands.find_alternate").find_alternate
-local load_projections = require("altestnate.fs").load_projections
+local load_projections = require("altestnate.util").load_projections
 local prompt = require("altestnate.prompt").prompt
 
 ---@class AltestnateCommand
