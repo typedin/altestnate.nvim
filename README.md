@@ -8,7 +8,10 @@
 - **Open alternate test files in a vertical split** for better side-by-side editing.
 - **Edit and create projection files** for better management of your alternate file mappings.
 - **Customizable key mappings** for easy access.
+
+## WIP
 - **wip**: interact with the user to create a projection file
+- **wip**: give the ability to the user to change the projection file so it doesn't collide with [tpope's projectinist](https://github.com/tpope/vim-projectionist) (.protestion.json?)
 
 ## Installation
 
