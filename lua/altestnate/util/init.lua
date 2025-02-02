@@ -4,19 +4,19 @@ local prompt = require("altestnate.prompt").prompt
 local M = {}
 
 --- Find the alternate file based on patterns
+---@param projections_file_path string
 ---@return table
-function M.load_projections()
+function M.load_projections(projections_file_path)
   local projections = {}
-  local projections_file = vim.fn.getcwd() .. "/.projections.json"
 
-  if vim.fn.filereadable(projections_file) == 1 then
+  if vim.fn.filereadable(projections_file_path) == 1 then
     -- TODO
     -- That should be a function that gets projections
     -- If the file exists, read and decode its contents
-    local content = vim.fn.readfile(projections_file)
+    local content = vim.fn.readfile(projections_file_path)
     projections = vim.fn.json_decode(table.concat(content, "\n"))
   else
-    prompt({ prompt = ".projections.json file NOT found. Create it? (y/n): " }, create_projection)
+    prompt({ prompt = projections_file_path .. " file NOT found. Create it? (y/n): " }, create_projection)
   end
 
   return projections

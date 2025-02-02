@@ -28,6 +28,7 @@ You can use [Lazy.nvim](https://github.com/folke/lazy.nvim) to manage the plugin
       { "<leader>ae", "<cmd>EditProjectionFile<cr>", desc = "Edit the projection file" },
       { "<leader>ac", "<cmd>CreateProjectionsFile<cr>", desc = "Create a projection file" },
     },
+    projections_file = ".protestions.json",
   },
 }
 ```
@@ -61,6 +62,7 @@ require("altestnate").setup({
     { "<leader>ae", "<cmd>EditProjectionFile<cr>", desc = "Edit projection file" },
     { "<leader>ac", "<cmd>CreateProjectionsFile<cr>", desc = "Create projection file" },
   },
+  projections_file = ".protestions.json",
 })
 ```
 

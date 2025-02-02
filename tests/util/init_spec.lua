@@ -1,29 +1,28 @@
 local test_util = require("tests.test_util")
 
-local function rename_file(old_path, new_path)
-  os.execute("mv " .. old_path .. " " .. new_path)
-end
-
 describe("util", function()
-  local projections_file = vim.fn.expand(".projections.json")
-  local function cleanup()
-    if vim.fn.filereadable(projections_file) == 1 then
-      os.remove(projections_file)
-    end
-  end
+  after_each(function()
+    test_util.reset_editor()
+  end)
+
+  local projections_file = vim.fn.expand(".test_projections_file.json")
+
   before_each(function()
-    rename_file(vim.fn.getcwd(-1, -1) .. "/.projections.json", vim.fn.getcwd(-1, -1) .. "/.projections.json.bak")
+    os.execute("rm -rf " .. projections_file)
   end)
 
   after_each(function()
-    cleanup()
     test_util.reset_editor()
-    rename_file(vim.fn.getcwd(-1, -1) .. "/.projections.json.bak", vim.fn.getcwd(-1, -1) .. "/.projections.json")
+    os.execute("rm -rf " .. projections_file)
   end)
+
   describe("load default projection file", function()
-    it("creates a .projections.json when the user confirms", function()
+    it("creates a projections file when the user confirms", function()
       vim.schedule(function()
-        require("altestnate.util").load_projections()
+        require("altestnate").setup({
+          projections_file = projections_file,
+        })
+        require("altestnate.util").load_projections(projections_file)
       end)
       assert.is_false(vim.fn.filereadable(projections_file) == 1)
 
@@ -36,9 +35,12 @@ describe("util", function()
       assert.is_true(vim.fn.filereadable(projections_file) == 1)
     end)
 
-    it("doesn't create a .projections.json when the user abort", function()
+    it("doesn't create a projections file when the user abort", function()
       vim.schedule(function()
-        require("altestnate.util").load_projections()
+        require("altestnate").setup({
+          projections_file = projections_file,
+        })
+        require("altestnate.util").load_projections(projections_file)
       end)
       assert.is_false(vim.fn.filereadable(projections_file) == 1)
 

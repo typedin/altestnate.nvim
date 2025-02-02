@@ -8,12 +8,16 @@ local prompt = require("altestnate.prompt").prompt
 ---@class AltestnateCommand
 local M = {}
 
+local function get_projections_file()
+  return require("altestnate").get("projections_file")
+end
+
 M.create_projections_file = function()
   -- TODO
   -- control that the file was createdd
   prompt({ prompt = "Create a .projections file? (y/n): " }, create_projection)
   prompt({ prompt = "Edit the .projections file? (y/n): " }, function()
-    vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. ".projections.json")
+    vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. get_projections_file())
   end)
 end
 
@@ -27,7 +31,7 @@ end
 ---
 ---@return string
 local function get_alternate()
-  local projections = load_projections()
+  local projections = load_projections(get_projections_file())
   return find_alternate(projections, vim.fn.expand("%:p"))
 end
 

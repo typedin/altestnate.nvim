@@ -3,9 +3,11 @@ local edit_projection = require("altestnate.commands").edit_projections_file
 local split_open_alternate = require("altestnate.commands").split_open_alternate
 local toggle_alternate = require("altestnate.commands").toggle_alternate
 
--- TODO
--- cache projections
---
+---@class altestnate.Defaults
+---@field keys table<string, string>: The keymaps to control alternate navigation
+---@field projections_file string: The name of the file that contains the projections
+
+---@type altestnate.Defaults
 local defaults = {
   keys = {
     { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle to alternate file" },
@@ -13,14 +15,17 @@ local defaults = {
     { "<leader>ae", "<cmd>EditProjectionFile<cr>", desc = "Edit the projection file" },
     { "<leader>ac", "<cmd>CreateProjectionsFile<cr>", desc = "Create a projection file" },
   },
+  projections_file = ".protestions.json",
 }
 
 ---@class altestnate.Options
 ---@field keys table<string, string>: The keymaps to control alternate navigation
+---@field projections_file string: The name of the file that contains the projections
 
 ---@type altestnate.Options
 local options = {
   keys = {},
+  projections_file = "",
 }
 
 local M = {}
@@ -31,6 +36,15 @@ function M.setup(opts)
   opts.keys = opts.keys or {} -- Ensure opts.keys is a table
 
   options.keys = vim.list_extend(vim.deepcopy(defaults.keys), opts.keys)
+  options.projections_file = opts.projections_file or defaults.projections_file
+end
+
+---@return string|table<string, string>
+function M.get(key)
+  if key == nil then
+    return options
+  end
+  return options[key]
 end
 
 M.start_altestnate = function()
