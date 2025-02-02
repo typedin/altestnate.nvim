@@ -1,6 +1,6 @@
 local test_util = require("tests.test_util")
 
-describe("util", function()
+describe("fs", function()
   after_each(function()
     test_util.reset_editor()
   end)
@@ -22,7 +22,7 @@ describe("util", function()
         require("altestnate").setup({
           projections_file = projections_file,
         })
-        require("altestnate.util").load_projections(projections_file)
+        require("altestnate.fs").load_projections(projections_file)
       end)
       assert.is_false(vim.fn.filereadable(projections_file) == 1)
 
@@ -40,7 +40,7 @@ describe("util", function()
         require("altestnate").setup({
           projections_file = projections_file,
         })
-        require("altestnate.util").load_projections(projections_file)
+        require("altestnate.fs").load_projections(projections_file)
       end)
       assert.is_false(vim.fn.filereadable(projections_file) == 1)
 

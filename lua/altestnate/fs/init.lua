@@ -49,10 +49,31 @@ end
 function M.create_file(file_path)
   local dir = vim.fn.fnamemodify(file_path, ":h") -- Get the directory of the new file
   if vim.fn.mkdir(dir, "p") then -- Create the directory if it doesn't exist
-    vim.notify("Folders existed, not creating them" .. file_path, vim.log.levels.INFO)
+    vim.notify("Folders existed, not creating them " .. file_path, vim.log.levels.INFO)
   end
 
   vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. file_path)
+end
+
+--- Find the alternate file based on patterns
+---@param projections_file_path string
+---@return table
+function M.load_projections(projections_file_path)
+  local projections = {}
+
+  if vim.fn.filereadable(projections_file_path) == 1 then
+    -- TODO
+    -- That should be a function that gets projections
+    -- If the file exists, read and decode its contents
+    local content = vim.fn.readfile(projections_file_path)
+    projections = vim.fn.json_decode(table.concat(content, "\n"))
+  else
+    prompt({ prompt = projections_file_path .. " file NOT found. Create it? (y/n): " }, function()
+      M.create_projection()
+    end)
+  end
+
+  return projections
 end
 
 return M
