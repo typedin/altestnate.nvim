@@ -8,3 +8,4 @@
 foo.*
 node_modules
 tt.*
+.protestions.json
