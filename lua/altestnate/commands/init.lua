@@ -15,14 +15,14 @@ end
 M.create_projections_file = function()
   -- TODO
   -- control that the file was createdd
-  prompt({ prompt = "Create a .projections file? (y/n): " }, create_projection)
-  prompt({ prompt = "Edit the .projections file? (y/n): " }, function()
+  prompt({ prompt = "Create a projections file? (y/n): " }, create_projection)
+  prompt({ prompt = "Edit the projections file? (y/n): " }, function()
     vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. get_projections_file())
   end)
 end
 
 M.edit_projections_file = function()
-  prompt({ prompt = "Edit the .projections file? (y/n): " }, edit_projection)
+  prompt({ prompt = "Edit the projections file? (y/n): " }, edit_projection)
 end
 
 ---Private function
