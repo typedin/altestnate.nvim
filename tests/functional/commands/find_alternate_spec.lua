@@ -22,6 +22,7 @@ describe("find_alternate", function()
 
       assert.are.same("src/__tests__/file.test.ts", result)
     end)
+
     it("finds the alternate test file for a general PHP source file", function()
       local file_path = "src/MyClass.php"
 
@@ -29,6 +30,7 @@ describe("find_alternate", function()
 
       assert.are.same("tests/MyClassTest.php", result)
     end)
+
     it("finds the alternate test file for an Actions PHP source file", function()
       local file_path = "src/Actions/MyAction.php"
 
@@ -36,6 +38,7 @@ describe("find_alternate", function()
 
       assert.are.same("tests/Actions/MyActionTest.php", result)
     end)
+
     it("finds the alternate test file for a lua source file", function()
       local file_path = "lua/file.lua"
 
