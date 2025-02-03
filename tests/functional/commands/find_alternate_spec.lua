@@ -1,13 +1,8 @@
 local find_alternate = require("altestnate.commands.find_alternate").find_alternate
 local projections = require("tests.fixtures.projections")
-local test_util = require("tests.test_util")
 
 describe("find_alternate", function()
   describe("for source files", function()
-    after_each(function()
-      test_util.reset_editor()
-    end)
-
     it("finds the alternate test file for a TypeScript source file with underscore", function()
       local file_path = "src/source_file.ts"
 
@@ -49,10 +44,6 @@ describe("find_alternate", function()
   end)
 
   describe("for test files", function()
-    after_each(function()
-      test_util.reset_editor()
-    end)
-
     it("finds the alternate source file for a TypeScript file with underscore", function()
       local file_path = "src/source_file.ts"
 
