@@ -15,9 +15,6 @@ end
 
 M.create_projections_file = function()
   prompt({ prompt = "Create a projections file? (y/n): " }, create_projection)
-  prompt({ prompt = "Edit the projections file? (y/n): " }, function()
-    vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. get_projections_file())
-  end)
   vim.ui.input({ prompt = "Enter choices (space-separated): " }, function(input)
     if input then
       vim.fn.writefile({ input_to_json_string(input) }, get_projections_file())

@@ -20,9 +20,6 @@ describe("A user can populate their own projection file by interacting with the 
     -- Create a projections file? (y/n):
     vim.api.nvim_feedkeys("y\n", "n", true)
 
-    -- Edit the projections file? (y/n):
-    vim.api.nvim_feedkeys("y\n", "n", true)
-
     -- Enter choices (space-separated):
     vim.api.nvim_feedkeys("src/init.lua tests _spec\n", "n", true)
     -- Wait for the file to be written
