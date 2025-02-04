@@ -12,7 +12,7 @@ local defaults = {
   keys = {
     { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle to alternate file" },
     { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new vertical split" },
-    { "<leader>ae", "<cmd>EditProjectionFile<cr>", desc = "Edit the projection file" },
+    { "<leader>ae", "<cmd>EditProjectionsFile<cr>", desc = "Edit the projection file" },
     { "<leader>ac", "<cmd>CreateProjectionsFile<cr>", desc = "Create a projection file" },
   },
   projections_file = ".protestions.json",
@@ -51,8 +51,8 @@ M.start_altestnate = function()
   -- register a CreateProjection command
   vim.api.nvim_create_user_command("CreateProjectionsFile", create_projection, {})
 
-  -- create a EditProjection command
-  vim.api.nvim_create_user_command("EditProjectionFile", edit_projection, {})
+  -- create a EditProjections command
+  vim.api.nvim_create_user_command("EditProjectionsFile", edit_projection, {})
 
   -- register a ToggleAlternate command
   vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})

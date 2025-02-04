@@ -1,8 +1,5 @@
-local altestnate = require("altestnate")
 local projections_file = vim.fn.expand(".test_projections_file.json")
-
-altestnate.setup({
-  -- default keys are used
+require("altestnate").setup({
   projections_file = projections_file,
 })
 

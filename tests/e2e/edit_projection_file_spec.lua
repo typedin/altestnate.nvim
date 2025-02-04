@@ -21,6 +21,7 @@ describe("Edit project file", function()
 
     -- Schedule the setup and file opening
     vim.schedule(function()
+      -- vim.api.nvim_command("EditProjectionsFile")
       require("altestnate.fs").edit_projection(projections_file)
     end)
 
