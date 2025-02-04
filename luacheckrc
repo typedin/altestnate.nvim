@@ -6,14 +6,14 @@ exclude_files = {
 }
 
 ignore = {
-  "212", -- Unused argument
-  "631", -- Line is too long
   "122", -- Setting a readonly global
+  "212", -- Unused argument
   "542", -- Empty if branch
+  "631", -- Line is too long
 }
 
 read_globals = {
-  "vim",
-  "a",
   "assert",
+  "it",
+  "vim",
 }
