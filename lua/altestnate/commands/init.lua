@@ -4,6 +4,7 @@ local edit_projection = require("altestnate.fs").edit_projection
 local find_alternate = require("altestnate.commands.find_alternate").find_alternate
 local load_projections = require("altestnate.fs").load_projections
 local prompt = require("altestnate.prompt").prompt
+local input_to_json_string = require("altestnate.utils.input_to_json_string")
 
 ---@class AltestnateCommand
 local M = {}
@@ -13,11 +14,16 @@ local function get_projections_file()
 end
 
 M.create_projections_file = function()
-  -- TODO
-  -- control that the file was createdd
   prompt({ prompt = "Create a projections file? (y/n): " }, create_projection)
   prompt({ prompt = "Edit the projections file? (y/n): " }, function()
     vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. get_projections_file())
+  end)
+  vim.ui.input({ prompt = "Enter choices (space-separated): " }, function(input)
+    if input then
+      vim.fn.writefile({ input_to_json_string(input) }, get_projections_file())
+    else
+      vim.notify("\nNo input provided", vim.log.levels.INFO)
+    end
   end)
 end
 

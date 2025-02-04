@@ -82,3 +82,6 @@ Commands:
 ## Contributing
 
 Feel free to open issues or submit pull requests for bug fixes or new features.
+
+## Thanks
+The json library was created by [tylerneylon](https://gist.github.com/tylerneylon/59f4bcf316be525b30ab)

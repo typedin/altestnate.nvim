@@ -1,0 +1,1 @@
+{"src\/*.lua":{"alternate":"tests\/{}_spec.lua", "type":"source"}, "tests\/*_spec.lua":{"alternate":"src\/{}.lua", "type":"test"}}
