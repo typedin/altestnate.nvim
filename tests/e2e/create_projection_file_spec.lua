@@ -1,53 +1,39 @@
-local test_util = require("tests.test_util")
+local projections_file = vim.fn.expand(".test_projections_file.json")
+require("altestnate").setup({
+  projections_file = projections_file,
+})
 
 describe("Projection file creation", function()
   after_each(function()
-    test_util.reset_editor()
-  end)
-
-  local projections_file = vim.fn.expand(".test_projections_file.json")
-
-  before_each(function()
-    os.execute("rm -rf " .. projections_file)
-  end)
-
-  after_each(function()
-    test_util.reset_editor()
     os.execute("rm -rf " .. projections_file)
   end)
 
   it("succeeds when the user confirms", function()
     vim.schedule(function()
-      require("altestnate").setup({
-        projections_file = projections_file,
-      })
       require("altestnate.fs").load_projections(projections_file)
     end)
     assert.is_false(vim.fn.filereadable(projections_file) == 1)
 
     vim.api.nvim_feedkeys("y\n", "n", true)
 
-    vim.wait(1000, function()
+    vim.wait(50, function()
       return vim.fn.filereadable(projections_file) == 1
-    end, 50)
+    end, 10)
 
     assert.is_true(vim.fn.filereadable(projections_file) == 1)
   end)
 
   it("doesn't succeed when the user abort", function()
     vim.schedule(function()
-      require("altestnate").setup({
-        projections_file = projections_file,
-      })
       require("altestnate.fs").load_projections(projections_file)
     end)
     assert.is_false(vim.fn.filereadable(projections_file) == 1)
 
     vim.api.nvim_feedkeys("n\n", "n", true)
 
-    vim.wait(1000, function()
+    vim.wait(50, function()
       return vim.fn.filereadable(projections_file) == 1
-    end, 50)
+    end, 10)
 
     assert.is_false(vim.fn.filereadable(projections_file) == 1)
   end)
