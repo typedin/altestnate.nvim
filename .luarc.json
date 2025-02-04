@@ -8,6 +8,8 @@
   },
     "diagnostics.globals": [
         "it",
-        "describe"
+        "describe",
+        "after_each",
+        "before_each"
     ]
 }
