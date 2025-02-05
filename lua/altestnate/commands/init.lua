@@ -29,11 +29,14 @@ M.create_projections_file = function()
       vim.notify("\nCould not create the file", vim.log.levels.ERROR)
     end
   end)
+end
+
+M.add_projection = function()
   vim.ui.input({ prompt = "Enter choices (space-separated): " }, function(input)
-    if input then
-      vim.fn.writefile({ input_to_json_string(input) }, get_projections_file())
-    else
+    if #input == 0 then
       vim.notify("\nNo input provided", vim.log.levels.INFO)
+    else
+      vim.fn.writefile({ input_to_json_string(input) }, get_projections_file())
     end
   end)
 end

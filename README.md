@@ -41,16 +41,8 @@ By default, the plugin provides the following key mappings:
 
     <leader>at: Toggle between the alternate file.
     <leader>as: Open the alternate file in a vertical split.
-    <leader>ae: Edit the projections file.
-    <leader>ac: Create a projections file.
 
 You can customize these key mappings by modifying the opts in the plugin setup.
-Commands
-
-    :ToggleAlternate – Toggle between the alternate file.
-    :SplitOpenAlternate – Open the alternate file in a vertical split.
-    :EditProjectionsFile – Edit the projections file.
-    :CreateProjectionsFile – Create a projections file.
 
 ## Setup & Configuration
 
@@ -61,8 +53,6 @@ require("altestnate").setup({
   keys = {
     { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle alternate file" },
     { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new split" },
-    { "<leader>ae", "<cmd>EditProjectionsFile<cr>", desc = "Edit projections file" },
-    { "<leader>ac", "<cmd>CreateProjectionsFile<cr>", desc = "Create projections file" },
   },
   projections_file = ".protestions.json",
 })
@@ -74,10 +64,11 @@ You can modify the keys table to set your preferred key bindings.
 This plugin registers the commands and sets up key mappings after the plugin is initialized. Typically called after setup().
 Commands:
 
-    :CreateProjectionsFile – Creates a projections file.
-    :EditProjectionsFile – Opens the projections file for editing.
-    :ToggleAlternate – Switches between the alternate file.
-    :SplitOpenAlternate – Opens the alternate file in a new vertical split.
+    :ToggleAlternate        – Toggle between the alternate file.
+    :SplitOpenAlternate     – Open the alternate file in a vertical split.
+    :AddProjection          - Add a projection to the projections file
+    :EditProjectionsFile    – Edit the projections file.
+    :CreateProjectionsFile  – Create a projections file.
 
 ## Contributing
 
