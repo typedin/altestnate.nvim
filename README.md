@@ -58,6 +58,7 @@ This plugin registers the commands and sets up key mappings after the plugin is 
 Commands:
 
 | command                 | Description                                   |
+|-------------------------|-----------------------------------------------|
 | ToggleAlternate         | Toggle between the alternate file.            |
 | SplitOpenAlternate      | Open the alternate file in a vertical split.  |
 | AddProjection           | Add a projection to the projections file      |
