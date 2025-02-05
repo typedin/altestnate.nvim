@@ -1,9 +1,7 @@
-local M = {}
-
 ---@param projections table<string, table>>
 ---@param file_path string
 ---@return string|nil
-M.find_alternate = function(projections, file_path)
+local find_alternate = function(projections, file_path)
   local current_file = file_path
 
   local result = nil
@@ -27,4 +25,4 @@ M.find_alternate = function(projections, file_path)
   return result
 end
 
-return M
+return find_alternate
