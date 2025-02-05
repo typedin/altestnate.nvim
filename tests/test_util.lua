@@ -1,4 +1,3 @@
-require("plenary.async").tests.add_to_env()
 local M = {}
 
 M.reset_editor = function()
@@ -14,8 +13,12 @@ M.reset_editor = function()
   end
 end
 
-M.file_exists = function(filepath)
-  return vim.loop.fs_stat(filepath) ~= nil
+M.file_exists = function(path)
+  local f = io.open(path, "r")
+  if f then
+    f:close()
+    return true
+  end
+  return false
 end
-
 return M
