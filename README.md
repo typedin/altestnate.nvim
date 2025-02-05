@@ -39,8 +39,8 @@ You can use [Lazy.nvim](https://github.com/folke/lazy.nvim) to manage the plugin
 
 By default, the plugin provides the following key mappings:
 
-    <leader>at: Toggle between the alternate file.
-    <leader>as: Open the alternate file in a vertical split.
+    <leader>at  - Toggle between the alternate file.
+    <leader>as  - Open the alternate file in a vertical split.
 
 You can customize these key mappings by modifying the opts in the plugin setup.
 
