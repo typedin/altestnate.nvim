@@ -1,6 +1,6 @@
 local create_file = require("altestnate.fs.create_file")
 local find_alternate = require("altestnate.fs.find_alternate")
-local input_to_json_string = require("altestnate.utils.input_to_json_string")
+local input_to_projection_entry = require("altestnate.utils.input_to_projection_entry")
 local load_projections = require("altestnate.fs.load_projections")
 
 ---@class AltestnateCommand
@@ -35,9 +35,23 @@ M.add_projection = function()
   vim.ui.input({ prompt = "Enter choices (space-separated): " }, function(input)
     if #input == 0 then
       vim.notify("\nNo input provided", vim.log.levels.INFO)
-    else
-      vim.fn.writefile({ input_to_json_string(input) }, get_projections_file())
+      return
     end
+
+    -- merge existing content with the new content
+    -- use an empty table as default if the file doesn't exist
+    local function existing_content()
+      if vim.fn.filereadable(get_projections_file()) ~= 1 then
+        return {}
+      end
+      return vim.fn.json_decode(vim.fn.readfile(get_projections_file()))
+    end
+
+    -- read the file and append the new content
+    local merged = vim.tbl_deep_extend("force", input_to_projection_entry(input), existing_content())
+    local table_to_json = vim.fn.json_encode(merged)
+
+    vim.fn.writefile({ table_to_json }, get_projections_file())
   end)
 end
 

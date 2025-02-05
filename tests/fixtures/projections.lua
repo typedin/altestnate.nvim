@@ -1,10 +1,10 @@
 local M = {
   ["src/*.ts"] = {
-    alternate = "src/__tests__/{basename}.test.ts",
+    alternate = "src/__tests__/{}.test.ts",
     type = "source",
   },
   ["src/__tests__/*.test.ts"] = {
-    alternate = "src/{basename}.ts",
+    alternate = "src/{}.ts",
     type = "test",
   },
   ["src/Actions/*.php"] = {
