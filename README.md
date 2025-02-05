@@ -1,7 +1,7 @@
 # altestnate.nvim
 
 **altestnate.nvim** is a Neovim plugin for easy navigation between test and source files with configurable key mappings. It integrates with Neovim's built-in user commands and allows you to quickly toggle between alternate files, open them in new splits, and manage projections files.
-This work is a way to learn a bit about the lua programming language and the neovi api. Ugly code to be expected.
+This work is a way to learn a bit about the lua programming language and the Neovim api. Ugly code to be expected.
 
 ## Features
 
