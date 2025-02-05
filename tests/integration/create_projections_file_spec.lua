@@ -5,9 +5,9 @@ require("altestnate").setup({
 
 describe("A user can populate their own projection file by interacting with the plugin", function()
   after_each(function()
-    if vim.fn.filereadable(projections_file) == 1 then
+    vim.schedule(function()
       os.remove(projections_file)
-    end
+    end)
   end)
 
   it("creates a fully functionning projection file with valid values", function()
@@ -20,7 +20,7 @@ describe("A user can populate their own projection file by interacting with the 
 
     vim.defer_fn(function()
       assert(vim.fn.filereadable(projections_file) == 1, "File should exist")
-    end, 500) -- Wait 500ms before running the assertion
+    end, 100)
   end)
 
   it("doesn't create anything when the user aborts", function()
@@ -34,6 +34,6 @@ describe("A user can populate their own projection file by interacting with the 
     -- Defer the assertion to ensure Neovim has processed the input
     vim.defer_fn(function()
       assert(vim.fn.filereadable(projections_file) == 0, "File should not exist")
-    end, 500) -- Wait 500ms before running the assertion
+    end, 100)
   end)
 end)
