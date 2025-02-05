@@ -10,6 +10,7 @@ describe("find_alternate", function()
 
       assert.are.same("src/__tests__/source_file.test.ts", result)
     end)
+
     it("finds the alternate test file for a TypeScript source file", function()
       local file_path = "src/file.ts"
 
@@ -40,6 +41,20 @@ describe("find_alternate", function()
       local result = find_alternate(projections, file_path)
 
       assert.are.same("tests/file_spec.lua", result)
+    end)
+
+    it("finds the alternate test file for a deeply nested source file", function()
+      local nested_projections = {
+        ["lua/altestnate/*.lua"] = {
+          alternate = "tests/functional/{}_spec.lua",
+          type = "source",
+        },
+      }
+      local file_path = "lua/altestnate/commands/file.lua"
+
+      local result = find_alternate(nested_projections, file_path)
+
+      assert.are.same("tests/functional/commands/file_spec.lua", result)
     end)
   end)
 
@@ -82,6 +97,20 @@ describe("find_alternate", function()
       local result = find_alternate(projections, file_path)
 
       assert.are.same("lua/file.lua", result)
+    end)
+
+    it("finds the alternate source file for a deeply nested test file", function()
+      local nested_projections = {
+        ["tests/functional/*_spec.lua"] = {
+          alternate = "lua/altestnate/{}.lua",
+          type = "test",
+        },
+      }
+      local file_path = "tests/functional/commands/file_spec.lua"
+
+      local result = find_alternate(nested_projections, file_path)
+
+      assert.are.same("lua/altestnate/commands/file.lua", result)
     end)
   end)
 end)
