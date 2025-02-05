@@ -1,4 +1,4 @@
-local find_alternate = require("altestnate.commands.find_alternate").find_alternate
+local find_alternate = require("altestnate.commands.find_alternate")
 local projections = require("tests.fixtures.projections")
 
 describe("find_alternate", function()
