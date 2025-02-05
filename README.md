@@ -27,8 +27,6 @@ You can use [Lazy.nvim](https://github.com/folke/lazy.nvim) to manage the plugin
     keys = {
       { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle to alternate file" },
       { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new vertical split" },
-      { "<leader>ae", "<cmd>EditProjectionsFile<cr>", desc = "Edit the projections file" },
-      { "<leader>ac", "<cmd>CreateProjectionsFile<cr>", desc = "Create a projections file" },
     },
     projections_file = ".protestions.json",
   },
