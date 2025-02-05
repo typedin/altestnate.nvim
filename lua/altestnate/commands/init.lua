@@ -1,10 +1,7 @@
-local create_file = require("altestnate.fs").create_file
-local create_projection = require("altestnate.fs").create_projection
-local edit_projection = require("altestnate.fs").edit_projection
-local find_alternate = require("altestnate.commands.find_alternate").find_alternate
-local load_projections = require("altestnate.fs").load_projections
-local prompt = require("altestnate.prompt").prompt
+local create_file = require("altestnate.fs.create_file")
+local find_alternate = require("altestnate.fs.find_alternate")
 local input_to_json_string = require("altestnate.utils.input_to_json_string")
+local load_projections = require("altestnate.fs.load_projections")
 
 ---@class AltestnateCommand
 local M = {}
@@ -13,8 +10,25 @@ local function get_projections_file()
   return require("altestnate").get("projections_file")
 end
 
+---Private function
+---read :h expand
+---@return string | nil
+local function get_alternate_path()
+  local projections = load_projections(get_projections_file())
+  return find_alternate(projections, vim.fn.expand("%:p"))
+end
+
 M.create_projections_file = function()
-  prompt({ prompt = "Create a projections file? (y/n): " }, create_projection)
+  -- Create a projections file to the disk
+  -- the default template is a empty json file
+  vim.ui.input({ prompt = "Create a projections file? (y/n): " }, function(input)
+    if input:lower() ~= "y" then
+      vim.notify("\nAborted.", vim.log.levels.INFO)
+    end
+    if create_file({}, get_projections_file()) == -1 then
+      vim.notify("\nCould not create the file", vim.log.levels.ERROR)
+    end
+  end)
   vim.ui.input({ prompt = "Enter choices (space-separated): " }, function(input)
     if input then
       vim.fn.writefile({ input_to_json_string(input) }, get_projections_file())
@@ -25,48 +39,40 @@ M.create_projections_file = function()
 end
 
 M.edit_projections_file = function()
-  prompt({ prompt = "Edit the projections file? (y/n): " }, edit_projection)
-end
-
----Private function
----TODO
----read :h expand
----
----@return string
-local function get_alternate()
-  local projections = load_projections(get_projections_file())
-  return find_alternate(projections, vim.fn.expand("%:p"))
+  vim.ui.input({ prompt = "Edit the projections file? (y/n): " }, function(input)
+    if input:lower() ~= "y" then
+      vim.notify("\nAborted.", vim.log.levels.INFO)
+    end
+    vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. get_projections_file())
+  end)
 end
 
 -- Toggle between source and test files
 function M.toggle_alternate()
-  local alternate_path = get_alternate()
-  if alternate_path then
-    if vim.fn.filereadable(alternate_path) == 1 then
-      vim.cmd("edit " .. alternate_path)
-    else
-      create_file(alternate_path)
-    end
-  else
+  local alternate_path = get_alternate_path()
+  if alternate_path == nil then
     vim.notify("No alternate file found!", vim.log.levels.WARN)
+    return
   end
+  if vim.fn.filereadable(alternate_path) ~= 1 then
+    create_file({}, alternate_path)
+  end
+  -- edit the alternate file
+  vim.cmd("edit " .. alternate_path)
 end
 
 -- Function to split and open the alternate file in a vertical split
 function M.split_open_alternate()
-  local alternate_path = get_alternate()
-  if alternate_path then
-    -- Perform a vertical split and open the alternate file
-    -- if file exists open it
-    -- else edit a new buffer
-    if vim.fn.filereadable(alternate_path) == 1 then
-      vim.cmd("vsplit " .. alternate_path)
-    else
-      create_file(alternate_path)
-    end
-  else
+  local alternate_path = get_alternate_path()
+  if alternate_path == nil then
     vim.notify("No alternate file found!", vim.log.levels.WARN)
+    return
   end
+  if vim.fn.filereadable(alternate_path) ~= 1 then
+    create_file({}, alternate_path)
+  end
+  -- vertical split and open the alternate file
+  vim.cmd("vsplit " .. alternate_path)
 end
 
 return M
