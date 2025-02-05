@@ -24,6 +24,7 @@ M.create_projections_file = function()
   vim.ui.input({ prompt = "Create a projections file? (y/n): " }, function(input)
     if input:lower() ~= "y" then
       vim.notify("\nAborted.", vim.log.levels.INFO)
+      return
     end
     if create_file({}, get_projections_file()) == -1 then
       vim.notify("\nCould not create the file", vim.log.levels.ERROR)
