@@ -33,31 +33,50 @@ M.create_projections_file = function()
 end
 
 M.add_projection = function()
-  vim.ui.input({ prompt = "Enter choices (space-separated): " }, function(input)
-    if #input == 0 then
-      vim.notify("\nNo input provided", vim.log.levels.INFO)
-      return
-    end
+  local user_input = {
+    entry_key = { value = "", prompt = "Source file for a projection (ex: src/init.lua) :" },
+    test_folder = { value = "", prompt = "Test folder for this source file (ex: tests): " },
+    test_suffix = { value = "", prompt = "Suffix for the source file (ex: _spec): " },
+  }
 
-    -- merge existing content with the new content
-    -- use an empty table as default if the file doesn't exist
-    local function existing_content()
-      if vim.fn.filereadable(get_projections_file()) ~= 1 then
-        return {}
+  for key in pairs(user_input) do
+    vim.ui.input({ prompt = user_input[key].prompt }, function(input)
+      if #input == 0 then
+        vim.notify("\nNo input provided.", vim.log.levels.WARN)
+        return
       end
-      local file_content = vim.fn.readfile(get_projections_file())
-      if #file_content == 0 then
-        return {}
-      end
-      return vim.fn.json_decode(file_content)
+      user_input[key].value = input
+    end)
+  end
+
+  -- that should be redondant
+  if #user_input.test_suffix.value == 0 or #user_input.test_folder.value == 0 or #user_input.entry_key.value == 0 then
+    vim.notify("\nNo valid input provided", vim.log.levels.ERROR)
+    return
+  end
+
+  local function existing_content()
+    if vim.fn.filereadable(get_projections_file()) ~= 1 then
+      return {}
     end
+    local file_content = vim.fn.readfile(get_projections_file())
+    if #file_content == 0 then
+      return {}
+    end
+    return vim.fn.json_decode(file_content)
+  end
 
-    -- read the file and append the new content
-    local merged = vim.tbl_deep_extend("force", input_to_projection_entry(input), existing_content())
-    local table_to_json = vim.fn.json_encode(merged)
+  -- read the file and append the new content
+  local merged = vim.tbl_deep_extend(
+    "force",
+    input_to_projection_entry(
+      user_input.entry_key.value .. " " .. user_input.test_folder.value .. " " .. user_input.test_suffix.value
+    ),
+    existing_content()
+  )
+  local table_to_json = vim.fn.json_encode(merged)
 
-    vim.fn.writefile({ table_to_json }, get_projections_file())
-  end)
+  vim.fn.writefile({ table_to_json }, get_projections_file())
 end
 
 M.edit_projections_file = function()
