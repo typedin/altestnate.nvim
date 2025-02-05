@@ -1,5 +1,6 @@
-local create_projection = require("altestnate.commands").create_projections_file
-local edit_projection = require("altestnate.commands").edit_projections_file
+local add_projection = require("altestnate.commands").add_projection
+local create_projections_file = require("altestnate.commands").create_projections_file
+local edit_projections_file = require("altestnate.commands").edit_projections_file
 local split_open_alternate = require("altestnate.commands").split_open_alternate
 local toggle_alternate = require("altestnate.commands").toggle_alternate
 
@@ -12,8 +13,6 @@ local defaults = {
   keys = {
     { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle to alternate file" },
     { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new vertical split" },
-    { "<leader>ae", "<cmd>EditProjectionsFile<cr>", desc = "Edit the projection file" },
-    { "<leader>ac", "<cmd>CreateProjectionsFile<cr>", desc = "Create a projection file" },
   },
   projections_file = ".protestions.json",
 }
@@ -48,11 +47,14 @@ function M.get(key)
 end
 
 M.start_altestnate = function()
+  -- register a AddProjection command
+  vim.api.nvim_create_user_command("AddProjection", add_projection, {})
+
   -- register a CreateProjection command
-  vim.api.nvim_create_user_command("CreateProjectionsFile", create_projection, {})
+  vim.api.nvim_create_user_command("CreateProjectionsFile", create_projections_file, {})
 
   -- create a EditProjections command
-  vim.api.nvim_create_user_command("EditProjectionsFile", edit_projection, {})
+  vim.api.nvim_create_user_command("EditProjectionsFile", edit_projections_file, {})
 
   -- register a ToggleAlternate command
   vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})

@@ -8,11 +8,7 @@ describe("A user can populate their own projection file by interacting with the 
     os.execute("rm -rf " .. projections_file)
   end)
 
-  -- -- TODO
-  -- -- either the user wants to edit themselves
-  -- -- or they want a step by step guide
-  -- -- or they want to leave it as it
-  it("creates a fully functionning projection file", function()
+  it("creates a fully functionning projection file with valid values", function()
     vim.schedule(function()
       vim.api.nvim_command("CreateProjectionsFile")
     end)
@@ -28,5 +24,16 @@ describe("A user can populate their own projection file by interacting with the 
     end, 50)
 
     assert.is_true(vim.fn.filereadable(projections_file) == 1)
+  end)
+
+  it("doesn't create anything when the user aborts", function()
+    vim.schedule(function()
+      vim.api.nvim_command("CreateProjectionsFile")
+    end)
+
+    -- Create a projections file? (y/n):
+    vim.api.nvim_feedkeys("y\n", "n", true)
+
+    assert.is_false(vim.fn.filereadable(projections_file) == 1)
   end)
 end)
