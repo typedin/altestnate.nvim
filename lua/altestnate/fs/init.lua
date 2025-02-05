@@ -1,4 +1,4 @@
-local create_alternate_file = require("altestnate.fs.create_alternate_file")
+local create_file = require("altestnate.fs.create_file")
 local load_projections = require("altestnate.fs.load_projections")
 
 local function get_projections_file()
@@ -11,11 +11,7 @@ M.load_projections = load_projections
 
 -- Create the alternate file if the user agrees
 function M.create_alternate_file(file_path)
-  create_alternate_file(file_path)
-end
-
-function M.edit_projection()
-  vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. get_projections_file())
+  create_file(file_path)
 end
 
 -- TODO
@@ -41,13 +37,13 @@ function M.create_projection()
   -- from that create the test alternate
 end
 
-function M.create_file(file_path)
-  local dir = vim.fn.fnamemodify(file_path, ":h") -- Get the directory of the new file
-  if vim.fn.mkdir(dir, "p") then -- Create the directory if it doesn't exist
-    vim.notify("Folders existed, not creating them " .. file_path, vim.log.levels.INFO)
-  end
-
-  vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. file_path)
-end
+-- function M.create_file(file_path)
+--   local dir = vim.fn.fnamemodify(file_path, ":h") -- Get the directory of the new file
+--   if vim.fn.mkdir(dir, "p") then -- Create the directory if it doesn't exist
+--     vim.notify("Folders existed, not creating them " .. file_path, vim.log.levels.INFO)
+--   end
+--
+--   vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. file_path)
+-- end
 
 return M

@@ -1,4 +1,4 @@
-local find_alternate = require("altestnate.commands.find_alternate")
+local find_alternate = require("altestnate.fs.find_alternate")
 local projections = require("tests.fixtures.projections")
 
 describe("find_alternate", function()
@@ -50,11 +50,11 @@ describe("find_alternate", function()
           type = "source",
         },
       }
-      local file_path = "lua/altestnate/commands/file.lua"
+      local file_path = "lua/altestnate/fs/file.lua"
 
       local result = find_alternate(nested_projections, file_path)
 
-      assert.are.same("tests/functional/commands/file_spec.lua", result)
+      assert.are.same("tests/functional/fs/file_spec.lua", result)
     end)
   end)
 
@@ -106,11 +106,11 @@ describe("find_alternate", function()
           type = "test",
         },
       }
-      local file_path = "tests/functional/commands/file_spec.lua"
+      local file_path = "tests/functional/fs/file_spec.lua"
 
       local result = find_alternate(nested_projections, file_path)
 
-      assert.are.same("lua/altestnate/commands/file.lua", result)
+      assert.are.same("lua/altestnate/fs/file.lua", result)
     end)
   end)
 end)
