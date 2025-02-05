@@ -1,4 +1,5 @@
-local prompt = require("altestnate.prompt").prompt
+local create_alternate_file = require("altestnate.fs.create_alternate_file")
+local load_projections = require("altestnate.fs.load_projections")
 
 local function get_projections_file()
   return require("altestnate").get("projections_file")
@@ -6,17 +7,11 @@ end
 
 local M = {}
 
+M.load_projections = load_projections
+
 -- Create the alternate file if the user agrees
 function M.create_alternate_file(file_path)
-  local callback = function()
-    local dir = vim.fn.fnamemodify(file_path, ":h") -- Get the directory of the new file
-    vim.fn.mkdir(dir, "p") -- Create the directory if it doesn't exist
-    vim.fn.writefile({}, file_path) -- Create an empty file
-    vim.cmd("edit " .. file_path) -- Open the file
-    vim.notify("Created and opened: ", vim.log.levels.INFO)
-  end
-
-  prompt({ prompt = "Alternate file not found. Create it? (y/n): " }, callback)
+  create_alternate_file(file_path)
 end
 
 function M.edit_projection()
@@ -53,27 +48,6 @@ function M.create_file(file_path)
   end
 
   vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. file_path)
-end
-
---- Find the alternate file based on patterns
----@param projections_file_path string
----@return table
-function M.load_projections(projections_file_path)
-  local projections = {}
-
-  if vim.fn.filereadable(projections_file_path) == 1 then
-    -- TODO
-    -- That should be a function that gets projections
-    -- If the file exists, read and decode its contents
-    local content = vim.fn.readfile(projections_file_path)
-    projections = vim.fn.json_decode(table.concat(content, "\n"))
-  else
-    prompt({ prompt = projections_file_path .. " file NOT found. Create it? (y/n): " }, function()
-      M.create_projection()
-    end)
-  end
-
-  return projections
 end
 
 return M
