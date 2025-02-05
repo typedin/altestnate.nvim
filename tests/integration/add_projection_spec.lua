@@ -1,3 +1,4 @@
+local json = vim.fn.json_decode -- Use Neovim's built-in JSON decoder
 local projections_file = vim.fn.expand(".test_projections_file.json")
 require("altestnate").setup({
   projections_file = projections_file,
@@ -8,10 +9,6 @@ describe("A user can populate their own projection file by interacting with the 
     os.execute("rm -rf " .. projections_file)
   end)
 
-  -- -- TODO
-  -- -- either the user wants to edit themselves
-  -- -- or they want a step by step guide
-  -- -- or they want to leave it as it
   it("creates a fully functionning projection file with valid values", function()
     vim.schedule(function()
       vim.api.nvim_command("AddProjection")
@@ -24,7 +21,9 @@ describe("A user can populate their own projection file by interacting with the 
       return vim.fn.filereadable(projections_file) == 1
     end, 50)
 
-    assert.is_true(vim.fn.filereadable(projections_file) == 1)
+    local parsed_content = json(vim.fn.readfile(projections_file))
+    local expected_content = json(vim.fn.readfile("tests/fixtures/expected.json"))
+    assert(vim.deep_equal(parsed_content, expected_content), "File content does not match")
   end)
 
   it("doesn't create anything when the user aborts", function()
@@ -39,6 +38,22 @@ describe("A user can populate their own projection file by interacting with the 
   end)
 
   it("adds to an existing projection file", function()
-    assert.is_false(1 == 1)
+    vim.schedule(function()
+      -- create a projection file with some content
+      os.execute("echo '{}' >> " .. projections_file)
+      vim.api.nvim_command("AddProjection")
+    end)
+    --
+    -- Enter choices (space-separated):
+    vim.api.nvim_feedkeys("src/init.lua tests _spec\n", "n", true)
+
+    -- Wait for the file to be written
+    vim.wait(500, function()
+      return vim.fn.filereadable(projections_file) == 1
+    end, 50)
+
+    local parsed_content = json(vim.fn.readfile(projections_file))
+    local expected_content = json(vim.fn.readfile("tests/fixtures/expected.json"))
+    assert(vim.deep_equal(parsed_content, expected_content), "File content does not match")
   end)
 end)

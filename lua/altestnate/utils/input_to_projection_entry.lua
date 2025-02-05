@@ -1,5 +1,7 @@
 local create_projections_entry = require("altestnate.commands.create_projections_entry")
 
+---@param input string space separated values
+---@return table
 local function M(input)
   local args = {
     "entry_key",
@@ -17,9 +19,7 @@ local function M(input)
     end
     index = index + 1
   end
-  local tableWithData = create_projections_entry(mapped_args)
-
-  return vim.json.encode(tableWithData)
+  return create_projections_entry(mapped_args)
 end
 
 return M
