@@ -45,7 +45,11 @@ M.add_projection = function()
       if vim.fn.filereadable(get_projections_file()) ~= 1 then
         return {}
       end
-      return vim.fn.json_decode(vim.fn.readfile(get_projections_file()))
+      local file_content = vim.fn.readfile(get_projections_file())
+      if #file_content == 0 then
+        return {}
+      end
+      return vim.fn.json_decode(file_content)
     end
 
     -- read the file and append the new content

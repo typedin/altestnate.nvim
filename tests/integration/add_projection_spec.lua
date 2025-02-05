@@ -40,7 +40,27 @@ describe("A user can populate their own projection file by interacting with the 
   it("adds to an existing projection file", function()
     vim.schedule(function()
       -- create a projection file with some content
-      os.execute("echo '{}' >> " .. projections_file)
+      os.execute("cp tests/fixtures/expected.json " .. projections_file)
+      vim.api.nvim_command("AddProjection")
+    end)
+    --
+    -- Enter choices (space-separated):
+    vim.api.nvim_feedkeys("lua/init.lua spec _test\n", "n", true)
+
+    -- Wait for the file to be written
+    vim.wait(500, function()
+      return vim.fn.filereadable(projections_file) == 1
+    end, 50)
+
+    local parsed_content = json(vim.fn.readfile(projections_file))
+    local expected_content = json(vim.fn.readfile("tests/fixtures/merged.json"))
+    assert.same(expected_content, parsed_content)
+  end)
+
+  it("adds to an existing projection empty file", function()
+    vim.schedule(function()
+      -- create a projection file with some content
+      os.execute("touch " .. projections_file)
       vim.api.nvim_command("AddProjection")
     end)
     --
