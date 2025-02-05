@@ -22,29 +22,12 @@ You can use [Lazy.nvim](https://github.com/folke/lazy.nvim) to manage the plugin
 ```lua
 -- Example for Lazy.nvim
 {
-  "typedin/altestnate",
-  opts = {
-    keys = {
-      { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle to alternate file" },
-      { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new vertical split" },
-    },
-    projections_file = ".protestions.json",
-  },
+  "typedin/altestnate"
 }
 ```
-## Usage
-### Key Mappings
-
-By default, the plugin provides the following key mappings:
-
-    <leader>at  - Toggle between the alternate file.
-    <leader>as  - Open the alternate file in a vertical split.
-
-You can customize these key mappings by modifying the opts in the plugin setup.
-
 ## Setup & Configuration
 
-To configure the plugin, simply call the setup() function within your init.lua or config.lua:
+Default setup:
 
 ```lua
 require("altestnate").setup({
@@ -58,15 +41,27 @@ require("altestnate").setup({
 
 You can modify the keys table to set your preferred key bindings.
 
+## Usage
+### Key Mappings
+
+By default, the plugin provides the following key mappings:
+| mappings    | Description                                   |
+| <leader>at  | Toggle between the alternate file.            |
+| <leader>as  | Open the alternate file in a vertical split.  |
+
+You can customize these key mappings by modifying the opts in the plugin setup.
+
+
 ## Commands
 This plugin registers the commands and sets up key mappings after the plugin is initialized. Typically called after setup().
 Commands:
 
-    :ToggleAlternate        – Toggle between the alternate file.
-    :SplitOpenAlternate     – Open the alternate file in a vertical split.
-    :AddProjection          - Add a projection to the projections file
-    :EditProjectionsFile    – Edit the projections file.
-    :CreateProjectionsFile  – Create a projections file.
+| command                 | Description                                   |
+| ToggleAlternate         | Toggle between the alternate file.            |
+| SplitOpenAlternate      | Open the alternate file in a vertical split.  |
+| AddProjection           | Add a projection to the projections file      |
+| EditProjectionsFile     | Edit the projections file.                    |
+| CreateProjectionsFile   | Create a projections file.                    |
 
 ## Contributing
 
