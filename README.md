@@ -47,8 +47,8 @@ You can modify the keys table to set your preferred key bindings.
 By default, the plugin provides the following key mappings:
 | mappings    | Description                                   |
 | ----------- | --------------------------------------------- |
-| <leader>at  | Toggle between the alternate file.            |
-| <leader>as  | Open the alternate file in a vertical split.  |
+| \<leader>at  | Toggle between the alternate file.            |
+| \<leader>as  | Open the alternate file in a vertical split.  |
 
 You can customize these key mappings by modifying the opts in the plugin setup.
 
