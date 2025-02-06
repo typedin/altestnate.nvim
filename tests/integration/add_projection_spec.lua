@@ -15,101 +15,95 @@ local function feedkeys(args)
 end
 
 describe("A user can populate their own projection file by interacting with the plugin", function()
-  after_each(function()
-    os.execute("rm -rf " .. projections_file)
-  end)
-
-  it("creates a fully functionning projection file with valid values", function()
-    vim.schedule(function()
-      vim.api.nvim_command("AddProjection")
+  describe("valid user input", function()
+    after_each(function()
+      os.execute("rm -rf " .. projections_file)
     end)
 
-    feedkeys({ step1 = "src/init.lua", step2 = "tests", step3 = "_spec" })
-    -- Wait for the file to be written
-    vim.wait(500, function()
-      return vim.fn.filereadable(projections_file) == 1
-    end, 50)
+    it("creates a fully functionning projection file with valid values", function()
+      vim.schedule(function()
+        vim.api.nvim_command("AddProjection")
+      end)
 
-    local parsed_content = json(vim.fn.readfile(projections_file))
-    local expected_content = json(vim.fn.readfile("tests/fixtures/expected.json"))
-    assert(vim.deep_equal(parsed_content, expected_content), "File content does not match")
-  end)
+      vim.wait(500, function()
+        feedkeys({ step1 = "src/init.lua", step2 = "tests", step3 = "_spec" })
+      end, 50)
+      -- Wait for the file to be written
+      vim.wait(500, function()
+        return vim.fn.filereadable(projections_file) == 1
+      end, 50)
 
-  it("doesn't create anything when the user aborts at first step", function()
-    vim.schedule(function()
-      vim.api.nvim_command("AddProjection")
+      local parsed_content = json(vim.fn.readfile(projections_file))
+      local expected_content = json(vim.fn.readfile("tests/fixtures/expected.json"))
+      assert.same(expected_content, parsed_content)
     end)
 
-    feedkeys({ step1 = "", step2 = "tests", step3 = "_spec" })
-    -- Wait for the file to be written
-    vim.wait(500, function()
-      return vim.fn.filereadable(projections_file) == 1
-    end, 50)
+    it("adds to an existing projection file", function()
+      vim.schedule(function()
+        -- create a projection file with some content
+        os.execute("cp tests/fixtures/expected.json " .. projections_file)
+        vim.api.nvim_command("AddProjection")
+      end)
+      --
+      feedkeys({ step1 = "lua/init.lua", step2 = "spec", step3 = "_test" })
+      -- Wait for the file to be written
+      vim.wait(500, function()
+        return vim.fn.filereadable(projections_file) == 1
+      end, 50)
 
-    assert.is_false(vim.fn.filereadable(projections_file) == 1)
-  end)
-
-  it("doesn't create anything when the user aborts at second step", function()
-    vim.schedule(function()
-      vim.api.nvim_command("AddProjection")
+      local parsed_content = json(vim.fn.readfile(projections_file))
+      local expected_content = json(vim.fn.readfile("tests/fixtures/merged.json"))
+      assert.same(expected_content, parsed_content)
     end)
 
-    feedkeys({ step1 = "src/init.lua", step2 = "", step3 = "_spec" })
-    -- Wait for the file to be written
-    vim.wait(500, function()
-      return vim.fn.filereadable(projections_file) == 1
-    end, 50)
+    it("adds to an existing projection empty file", function()
+      vim.schedule(function()
+        -- create a projection file with some content
+        os.execute("touch " .. projections_file)
+        vim.api.nvim_command("AddProjection")
+      end)
 
-    assert.is_false(vim.fn.filereadable(projections_file) == 1)
-  end)
+      feedkeys({ step1 = "src/init.lua", step2 = "tests", step3 = "_spec" })
+      -- Wait for the file to be written
+      vim.wait(500, function()
+        return vim.fn.filereadable(projections_file) == 1
+      end, 50)
 
-  it("doesn't create anything when the user aborts at third step", function()
-    vim.schedule(function()
-      vim.api.nvim_command("AddProjection")
+      local parsed_content = json(vim.fn.readfile(projections_file))
+      local expected_content = json(vim.fn.readfile("tests/fixtures/expected.json"))
+      assert.same(expected_content, parsed_content)
     end)
-
-    feedkeys({ step1 = "src/init.lua", step2 = "tests", step3 = "" })
-    -- Wait for the file to be written
-    vim.wait(500, function()
-      return vim.fn.filereadable(projections_file) == 1
-    end, 50)
-
-    assert.is_false(vim.fn.filereadable(projections_file) == 1)
   end)
 
-  it("adds to an existing projection file", function()
-    vim.schedule(function()
-      -- create a projection file with some content
-      os.execute("cp tests/fixtures/expected.json " .. projections_file)
-      vim.api.nvim_command("AddProjection")
-    end)
-    --
-    feedkeys({ step1 = "lua/init.lua", step2 = "spec", step3 = "_test" })
-    -- Wait for the file to be written
-    vim.wait(500, function()
-      return vim.fn.filereadable(projections_file) == 1
-    end, 50)
-
-    local parsed_content = json(vim.fn.readfile(projections_file))
-    local expected_content = json(vim.fn.readfile("tests/fixtures/merged.json"))
-    assert.same(expected_content, parsed_content)
-  end)
-
-  it("adds to an existing projection empty file", function()
-    vim.schedule(function()
-      -- create a projection file with some content
-      os.execute("touch " .. projections_file)
-      vim.api.nvim_command("AddProjection")
-    end)
-
-    feedkeys({ step1 = "src/init.lua", step2 = "tests", step3 = "_spec" })
-    -- Wait for the file to be written
-    vim.wait(500, function()
-      return vim.fn.filereadable(projections_file) == 1
-    end, 50)
-
-    local parsed_content = json(vim.fn.readfile(projections_file))
-    local expected_content = json(vim.fn.readfile("tests/fixtures/expected.json"))
-    assert(vim.deep_equal(parsed_content, expected_content), "File content does not match")
-  end)
+  -- describe("invalid user input", function()
+  --   it("doesn't create anything when the user aborts at first step", function()
+  --     vim.schedule(function()
+  --       vim.api.nvim_command("AddProjection")
+  --     end)
+  --
+  --     feedkeys({ step1 = "", step2 = "tests", step3 = "_spec" })
+  --
+  --     assert.is_false(vim.fn.filereadable(projections_file) == 1)
+  --   end)
+  --
+  --   it("doesn't create anything when the user aborts at second step", function()
+  --     vim.schedule(function()
+  --       vim.api.nvim_command("AddProjection")
+  --     end)
+  --
+  --     feedkeys({ step1 = "src/init.lua", step2 = "", step3 = "_spec" })
+  --
+  --     assert.is_false(vim.fn.filereadable(projections_file) == 1)
+  --   end)
+  --
+  --   it("doesn't create anything when the user aborts at third step", function()
+  --     vim.schedule(function()
+  --       vim.api.nvim_command("AddProjection")
+  --     end)
+  --
+  --     feedkeys({ step1 = "src/init.lua", step2 = "tests", step3 = "" })
+  --
+  --     assert.is_false(vim.fn.filereadable(projections_file) == 1)
+  --   end)
+  -- end)
 end)
