@@ -42,7 +42,7 @@ M.add_projection = function()
   for key in pairs(user_input) do
     vim.ui.input({ prompt = user_input[key].prompt }, function(input)
       if #input == 0 then
-        vim.notify("\nNo input provided.", vim.log.levels.WARN)
+        vim.notify("\nNo input provided.", vim.log.levels.INFO)
         return
       end
       user_input[key].value = input
@@ -51,7 +51,7 @@ M.add_projection = function()
 
   -- that should be redondant
   if #user_input.test_suffix.value == 0 or #user_input.test_folder.value == 0 or #user_input.entry_key.value == 0 then
-    vim.notify("\nNo valid input provided", vim.log.levels.ERROR)
+    vim.notify("\nNo valid input provided", vim.log.levels.INFO)
     return
   end
 
