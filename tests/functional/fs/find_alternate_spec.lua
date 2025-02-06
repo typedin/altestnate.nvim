@@ -56,6 +56,15 @@ describe("find_alternate", function()
 
       assert.are.same("tests/functional/fs/file_spec.lua", result)
     end)
+
+    it("gets alternate test file for _prefix_", function()
+      local inverted = require("tests.fixtures.inverted")
+      local file_path = "lua/file.lua"
+
+      local result = find_alternate(inverted, file_path)
+
+      assert.are.same("tests/spec_file.lua", result)
+    end)
   end)
 
   describe("for test files", function()
@@ -111,6 +120,15 @@ describe("find_alternate", function()
       local result = find_alternate(nested_projections, file_path)
 
       assert.are.same("lua/altestnate/fs/file.lua", result)
+    end)
+
+    it("gets alternate source file for _prefix_", function()
+      local inverted = require("tests.fixtures.inverted")
+      local file_path = "tests/spec_file.lua"
+
+      local result = find_alternate(inverted, file_path)
+
+      assert.are.same("lua/file.lua", result)
     end)
   end)
 end)
