@@ -11,3 +11,4 @@ tt.*
 .protestions.json
 .luacheckcache
 plenary.nvim/
+.test_projections_file.json
