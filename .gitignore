@@ -9,3 +9,5 @@ foo.*
 node_modules
 tt.*
 .protestions.json
+.luacheckcache
+plenary.nvim/
