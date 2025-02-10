@@ -1,13 +1,13 @@
 local projections_file = vim.fn.expand(".test_projections_file.json")
-require("altestnate").setup({
+local altestnate = require("altestnate")
+altestnate.setup({
   projections_file = projections_file,
 })
+altestnate.start_altestnate()
 
 describe("A user can populate their own projection file by interacting with the plugin", function()
   after_each(function()
-    vim.schedule(function()
-      os.remove(projections_file)
-    end)
+    os.remove(projections_file)
   end)
 
   it("creates a fully functionning projection file with valid values", function()

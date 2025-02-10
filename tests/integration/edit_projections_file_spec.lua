@@ -1,7 +1,9 @@
 local projections_file = vim.fn.expand(".test_projections_file.json")
-require("altestnate").setup({
+local altestnate = require("altestnate")
+altestnate.setup({
   projections_file = projections_file,
 })
+altestnate.start_altestnate()
 
 describe("Edit project file", function()
   before_each(function()
