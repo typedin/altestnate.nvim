@@ -1,5 +1,7 @@
 local M = {}
 
+-- WARNING
+-- this snippet is not used
 M.reset_editor = function()
   vim.cmd.tabonly({ mods = { silent = true } })
   for i, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
