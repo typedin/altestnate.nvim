@@ -1,4 +1,4 @@
-local create_projection_entry = require("altestnate.commands.create_projections_entry")
+local create_projection_entry = require("altestnate.utils.create_projections_entry")
 
 describe("create_projection_entry", function()
   it("creates a default empty structure with no entrie by default", function()

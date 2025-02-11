@@ -1,5 +1,5 @@
 local create_file = require("altestnate.fs.create_file")
-local create_projections_entry = require("altestnate.commands.create_projections_entry")
+local create_projections_entry = require("altestnate.utils.create_projections_entry")
 local find_alternate = require("altestnate.fs.find_alternate")
 local load_projections = require("altestnate.fs.load_projections")
 
