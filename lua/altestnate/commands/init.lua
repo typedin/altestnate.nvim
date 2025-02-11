@@ -1,6 +1,6 @@
 local create_file = require("altestnate.fs.create_file")
+local create_projections_entry = require("altestnate.commands.create_projections_entry")
 local find_alternate = require("altestnate.fs.find_alternate")
-local input_to_projection_entry = require("altestnate.utils.input_to_projection_entry")
 local load_projections = require("altestnate.fs.load_projections")
 
 ---@class AltestnateCommand
@@ -21,15 +21,9 @@ end
 M.create_projections_file = function()
   -- Create a projections file to the disk
   -- the default template is a empty json file
-  vim.ui.input({ prompt = "Create a projections file? (y/n): " }, function(input)
-    if input:lower() ~= "y" then
-      vim.notify("\nAborted.", vim.log.levels.INFO)
-      return
-    end
-    if create_file({}, get_projections_file()) == -1 then
-      vim.notify("\nCould not create the file", vim.log.levels.ERROR)
-    end
-  end)
+  if create_file({ "{}" }, get_projections_file()) == -1 then
+    vim.notify("\nCould not create the file", vim.log.levels.WARN)
+  end
 end
 
 M.add_projection = function()
@@ -39,15 +33,27 @@ M.add_projection = function()
     test_suffix = { value = "", prompt = "Suffix for the source file (ex: _spec): " },
   }
 
-  for key in pairs(user_input) do
-    vim.ui.input({ prompt = user_input[key].prompt }, function(input)
-      if #input == 0 then
-        vim.notify("\nNo input provided.", vim.log.levels.INFO)
-        return
-      end
-      user_input[key].value = input
-    end)
-  end
+  vim.ui.input({ prompt = user_input["entry_key"].prompt }, function(input)
+    if #input == 0 then
+      vim.notify("\nNo input provided.", vim.log.levels.INFO)
+      return
+    end
+    user_input["entry_key"].value = input
+  end)
+  vim.ui.input({ prompt = user_input["test_folder"].prompt }, function(input)
+    if #input == 0 then
+      vim.notify("\nNo input provided.", vim.log.levels.INFO)
+      return
+    end
+    user_input["test_folder"].value = input
+  end)
+  vim.ui.input({ prompt = user_input["test_suffix"].prompt }, function(input)
+    if #input == 0 then
+      vim.notify("\nNo input provided.", vim.log.levels.INFO)
+      return
+    end
+    user_input["test_suffix"].value = input
+  end)
 
   -- that should be redondant
   if #user_input.test_suffix.value == 0 or #user_input.test_folder.value == 0 or #user_input.entry_key.value == 0 then
@@ -69,23 +75,19 @@ M.add_projection = function()
   -- read the file and append the new content
   local merged = vim.tbl_deep_extend(
     "force",
-    input_to_projection_entry(
-      user_input.entry_key.value .. " " .. user_input.test_folder.value .. " " .. user_input.test_suffix.value
-    ),
+    create_projections_entry({
+      entry_key = user_input["entry_key"].value,
+      test_folder = user_input["test_folder"].value,
+      test_suffix = user_input["test_suffix"].value,
+    }),
     existing_content()
   )
-  local table_to_json = vim.fn.json_encode(merged)
 
-  vim.fn.writefile({ table_to_json }, get_projections_file())
+  vim.fn.writefile({ vim.fn.json_encode(merged) }, get_projections_file())
 end
 
 M.edit_projections_file = function()
-  vim.ui.input({ prompt = "Edit the projections file? (y/n): " }, function(input)
-    if input:lower() ~= "y" then
-      vim.notify("\nAborted.", vim.log.levels.INFO)
-    end
-    vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. get_projections_file())
-  end)
+  vim.cmd("edit " .. vim.fn.getcwd() .. "/" .. get_projections_file())
 end
 
 -- Toggle between source and test files
