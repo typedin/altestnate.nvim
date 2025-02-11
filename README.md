@@ -12,7 +12,6 @@ This work is a way to learn a bit about the lua programming language and the Neo
 - the user **may change** the projections filename so it doesn't collide with [tpope's projectinist](https://github.com/tpope/vim-projectionist) 
 
 ## WIP
-- **wip**: interact with the user to create a projections file
 - **wip**: some folders may have no alternate (e.g.: e2e) maybe "alternate" = "NOPE" or ""
 
 ## Installation

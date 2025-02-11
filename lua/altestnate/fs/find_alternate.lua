@@ -11,7 +11,7 @@ local find_alternate = function(projections, file_path)
     local lua_pattern = pattern:gsub("%*", "(.+)") -- Convert '*' to non-greedy capture
     local match = current_file:match(lua_pattern)
     if match then
-      if #config.alternate == 0 then
+      if #config.alternate == 0 then -- handle case where no projections are wanted
         return nil
       end
       result = config.alternate:gsub("{basename}", match):gsub("{}", match)

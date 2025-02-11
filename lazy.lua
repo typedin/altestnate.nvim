@@ -1,5 +1,1 @@
-return {
-  {
-    -- "typedin/altestnate.nvim",
-  },
-}
+return {}
