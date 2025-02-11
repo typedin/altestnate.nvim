@@ -1,3 +1,4 @@
+local altestnate = require("altestnate")
 local M = {}
 
 -- WARNING
@@ -23,4 +24,27 @@ M.file_exists = function(path)
   end
   return false
 end
+
+M.start_plugin = function(opts)
+  altestnate.setup(opts)
+  altestnate.start_altestnate()
+end
+
+---@param args table
+M.feedkeys = function(args)
+  local function send_key(key)
+    local termcode = vim.api.nvim_replace_termcodes(key .. "\n", true, false, true)
+    vim.api.nvim_feedkeys(termcode, "n", false)
+  end
+
+  local wait_time = 100
+  ---@diagnostic disable-next-line: unused-local
+  for _key, value in pairs(args) do
+    vim.defer_fn(function()
+      send_key(value)
+    end, wait_time)
+    wait_time = wait_time + 100
+  end
+end
+
 return M

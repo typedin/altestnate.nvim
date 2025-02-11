@@ -1,9 +1,9 @@
+local feedkeys = require("tests.test_util").feedkeys
 local projections_file = vim.fn.expand(".test_projections_file.json")
-local altestnate = require("altestnate")
-altestnate.setup({
+
+require("tests.test_util").start_plugin({
   projections_file = projections_file,
 })
-altestnate.start_altestnate()
 
 describe("A user can populate their own projection file by interacting with the plugin", function()
   after_each(function()
@@ -16,7 +16,7 @@ describe("A user can populate their own projection file by interacting with the 
     end)
 
     -- Create a projections file? (y/n):
-    vim.api.nvim_feedkeys("y\n", "n", true)
+    feedkeys({ step1 = "y" })
 
     vim.defer_fn(function()
       assert(vim.fn.filereadable(projections_file) == 1, "File should exist")
@@ -29,7 +29,7 @@ describe("A user can populate their own projection file by interacting with the 
     end)
 
     -- Create a projections file? (y/n):
-    vim.api.nvim_feedkeys("n\n", "n", true)
+    feedkeys({ step1 = "y" })
 
     -- Defer the assertion to ensure Neovim has processed the input
     vim.defer_fn(function()
