@@ -6,10 +6,22 @@
   "type": {
     "checkTableShape": true
   },
-    "diagnostics.globals": [
-        "it",
-        "describe",
-        "after_each",
-        "before_each"
-    ]
+  "Lua.workspace.library": [
+    "./lua",          // Include your project's Lua folder
+    "./scripts",      // Include any custom script directories
+    "/usr/share/nvim/runtime/lua",  // Include Neovim's Lua runtime (optional)
+    "~/.local/share/nvim/lazy",  // Include LazyVim plugins (if using LazyVim)
+    "~/.config/nvim/lua" // Your Neovim config, if relevant
+  ],
+  "diagnostics.globals": [
+      "it",
+      "describe",
+      "after_each",
+      "before_each",
+      "rockspec_format",
+      "version",
+      "description",
+      "dependencies",
+      "source"
+  ]
 }
