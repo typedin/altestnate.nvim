@@ -7,8 +7,13 @@ local function sanatize_path(a_path)
   return result
 end
 
----@param args UserInput
----@return table
+---@class UserInput
+---@field entry_key string The source file path.
+---@field test_folder string The test folder path.
+---@field test_suffix string The suffix for the test file.
+
+---@param args UserInput|nil The user input containing file paths and test suffix.
+---@return table<string, { alternate: string, type: "source" | "test" }>
 local function M(args)
   if args == nil then
     return {}
