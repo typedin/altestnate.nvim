@@ -24,6 +24,9 @@ local function feedkeys(args)
 end
 
 describe("AddProjection command", function()
+  before_each(function()
+    os.execute("rm -rf " .. projections_file)
+  end)
   describe("with valid user input", function()
     after_each(function()
       os.execute("rm -rf " .. projections_file)
@@ -98,6 +101,9 @@ describe("AddProjection command", function()
   end)
 
   describe("with invalid user input", function()
+    after_each(function()
+      os.execute("rm -rf " .. projections_file)
+    end)
     it("at the first step", function()
       vim.schedule(function()
         vim.api.nvim_command("AddProjection")
@@ -108,7 +114,9 @@ describe("AddProjection command", function()
         return vim.fn.filereadable(projections_file) == 1
       end, 50)
 
-      assert.is_false(vim.fn.filereadable(projections_file) == 1)
+      local messages = vim.fn.execute("messages")
+      local last_line = messages:match("([^\n]*)\n?$")
+      assert.same(last_line, "No input provided for source file.")
     end)
 
     it("at the second step", function()
@@ -121,7 +129,9 @@ describe("AddProjection command", function()
         return vim.fn.filereadable(projections_file) == 1
       end, 50)
 
-      assert.is_false(vim.fn.filereadable(projections_file) == 1)
+      local messages = vim.fn.execute("messages")
+      local last_line = messages:match("([^\n]*)\n?$")
+      assert.same(last_line, "No input provided for test folder.")
     end)
 
     it("at the third step", function()
@@ -134,7 +144,9 @@ describe("AddProjection command", function()
         return vim.fn.filereadable(projections_file) == 1
       end, 50)
 
-      assert.is_false(vim.fn.filereadable(projections_file) == 1)
+      local messages = vim.fn.execute("messages")
+      local last_line = messages:match("([^\n]*)\n?$")
+      assert.same(last_line, "No input provided for test suffix/prefix.")
     end)
   end)
 end)

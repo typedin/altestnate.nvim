@@ -1,4 +1,5 @@
 local add_projection = require("altestnate.commands").add_projection
+local add_file_as_projection = require("altestnate.commands").add_file_as_projection
 local create_projections_file = require("altestnate.commands").create_projections_file
 local edit_projections_file = require("altestnate.commands").edit_projections_file
 local split_open_alternate = require("altestnate.commands").split_open_alternate
@@ -55,6 +56,9 @@ M.start_altestnate = function()
 
   -- create a EditProjections command
   vim.api.nvim_create_user_command("EditProjectionsFile", edit_projections_file, {})
+
+  -- register a AddFileAsProjection command
+  vim.api.nvim_create_user_command("AddFileAsProjection", add_file_as_projection, {})
 
   -- register a ToggleAlternate command
   vim.api.nvim_create_user_command("ToggleAlternate", toggle_alternate, {})

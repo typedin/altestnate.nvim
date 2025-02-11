@@ -7,12 +7,7 @@ local function sanatize_path(a_path)
   return result
 end
 
----@class Args
----@field entry_key string: The path to the entry file
----@field test_folder string: The folder where test files are located
----@field test_suffix string: The suffix for test files (e.g., "_spec")
-
----@param args Args
+---@param args UserInput
 ---@return table
 local function M(args)
   if args == nil then
