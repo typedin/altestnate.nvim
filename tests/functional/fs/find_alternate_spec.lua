@@ -130,5 +130,48 @@ describe("find_alternate", function()
 
       assert.are.same("lua/file.lua", result)
     end)
+
+    it("gets no alternate for source that has been ruled out", function()
+      local file_path = "should/not/have/projection/index.lua"
+      local ruled_out = {
+        ["lua/*.lua"] = {
+          alternate = "tests/{}_spec.lua",
+          type = "source",
+        },
+        ["tests/*_spec.lua"] = {
+          alternate = "lua/{}.lua",
+          type = "test",
+        },
+        ["should/not/have/projection/index.lua"] = {
+          alternate = "",
+          type = "source",
+        },
+      }
+
+      local result = find_alternate(ruled_out, file_path)
+
+      assert.is_nil(result)
+    end)
+    it("gets no alternate for test file that has been ruled out", function()
+      local file_path = "tests/should/not/have/projection/index_spec.lua"
+      local ruled_out = {
+        ["lua/*.lua"] = {
+          alternate = "tests/{}_spec.lua",
+          type = "source",
+        },
+        ["tests/*_spec.lua"] = {
+          alternate = "lua/{}.lua",
+          type = "test",
+        },
+        ["tests/should/not/have/projection/*_spec.lua"] = {
+          alternate = "",
+          type = "test",
+        },
+      }
+
+      local result = find_alternate(ruled_out, file_path)
+
+      assert.is_nil(result)
+    end)
   end)
 end)

@@ -39,5 +39,9 @@ local M = {
     alternate = "lua/{}.lua",
     type = "test",
   },
+  ["should/not/have/projection/*.lua"] = {
+    alternate = "NOPE",
+    type = "source",
+  },
 }
 return M
