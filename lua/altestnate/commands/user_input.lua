@@ -1,4 +1,9 @@
----@class UserInput
+---@class UserInputEntry
+---@field value string
+---@field prompt string
+---@field error string
+
+---@type table<string, UserInputEntry>
 local user_input = {
   entry_key = {
     value = "",

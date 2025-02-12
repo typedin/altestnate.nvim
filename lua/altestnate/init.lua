@@ -5,27 +5,26 @@ local edit_projections_file = require("altestnate.commands").edit_projections_fi
 local split_open_alternate = require("altestnate.commands").split_open_alternate
 local toggle_alternate = require("altestnate.commands").toggle_alternate
 
----@class altestnate.Defaults
----@field keys table<string, string>: The keymaps to control alternate navigation
+---@class altestnate.Options
+---@field keys table<string, string>: The keymaps to control altestnate navigation
 ---@field projections_file string: The name of the file that contains the projections
+---@field no_alternate_flag string: The flag that can be used to prevent file from having projection can be an empty string, a word (eg: NOP)
 
----@type altestnate.Defaults
+---@type altestnate.Options
 local defaults = {
   keys = {
     { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle to alternate file" },
     { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new vertical split" },
   },
   projections_file = ".protestions.json",
+  no_alternate_flag = "",
 }
-
----@class altestnate.Options
----@field keys table<string, string>: The keymaps to control alternate navigation
----@field projections_file string: The name of the file that contains the projections
 
 ---@type altestnate.Options
 local options = {
   keys = {},
   projections_file = "",
+  no_alternate_flag = "",
 }
 
 local M = {}
@@ -37,13 +36,11 @@ function M.setup(opts)
 
   options.keys = vim.list_extend(vim.deepcopy(defaults.keys), opts.keys)
   options.projections_file = opts.projections_file or defaults.projections_file
+  options.no_alternate_flag = opts.no_alternate_flag or defaults.no_alternate_flag
 end
 
----@return string|table<string, string>
+---@return string|{[string]:string}
 function M.get(key)
-  if key == nil then
-    return options
-  end
   return options[key]
 end
 
