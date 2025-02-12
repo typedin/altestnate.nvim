@@ -58,7 +58,7 @@ describe("find_alternate", function()
     end)
 
     it("gets alternate test file for _prefix_", function()
-      local inverted = require("tests.fixtures.inverted")
+      local inverted = require("tests.fixtures.prefix")
       local file_path = "lua/file.lua"
 
       local result = find_alternate(inverted, file_path)
@@ -123,7 +123,7 @@ describe("find_alternate", function()
     end)
 
     it("gets alternate source file for _prefix_", function()
-      local inverted = require("tests.fixtures.inverted")
+      local inverted = require("tests.fixtures.prefix")
       local file_path = "tests/spec_file.lua"
 
       local result = find_alternate(inverted, file_path)

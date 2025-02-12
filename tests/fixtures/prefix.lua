@@ -1,5 +1,4 @@
 local M = {
-  -- mini.test
   ["lua/*.lua"] = {
     alternate = "tests/spec_{}.lua",
     type = "source",
