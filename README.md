@@ -12,7 +12,7 @@ This work is a way to learn a bit about the lua programming language and the Neo
 - the user **may change** the projections filename so it doesn't collide with [tpope's projectinist](https://github.com/tpope/vim-projectionist) 
 
 ## WIP
-- **wip**: some folders may have no alternate (e.g.: e2e) maybe "alternate" = "NOPE" or ""
+- find a way to test in a non flaky environment
 
 ## Installation
 
@@ -31,10 +31,11 @@ Default setup:
 ```lua
 require("altestnate").setup({
   keys = {
-    { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle alternate file" },
-    { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new split" },
+    { "<leader>at", "<cmd>ToggleAlternate<cr>", desc = "Toggle alternate file" },               -- Mapping to open directly the alternate file
+    { "<leader>as", "<cmd>SplitOpenAlternate<cr>", desc = "Open alternate file in new split" }, -- Mapping to split your editor and have your source code and test code side-by-side
   },
-  projections_file = ".protestions.json",
+  projections_file = ".protestions.json",                                                       -- the file were your projections will be stored
+  no_alternate_flag = "",                                                                       -- the flag that disables projections for the files of your choice
 })
 ```
 
