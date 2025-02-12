@@ -152,6 +152,7 @@ describe("find_alternate", function()
 
       assert.is_nil(result)
     end)
+
     it("gets no alternate for test file that has been ruled out", function()
       local file_path = "tests/should/not/have/projection/index_spec.lua"
       local ruled_out = {
